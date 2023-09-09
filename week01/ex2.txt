@@ -1,0 +1,164 @@
+    1  sudo apt update && sudo apt upgrade -y
+    2  sudo snap refresh
+    3  su root
+    4  ls
+    5  cd Desktop/
+    6  nano test.txt
+    7  sort -n -r test.txt
+    8  sort -n -r test.txt > test.txt
+    9  cat test.txt
+   10  whoami
+   11  hostname
+   12  man man
+   13  sudo apt-get install cmatrix
+   14  cmatrix
+   15  clear
+   16  cd /proc
+   17  cd /
+   18  find /proc/ -name "*task*"
+   19  find /proc -name "*task*"
+   20  find /proc -name "*task*" 1> output.txt 2> errors.txt
+   21  ls
+   22  find /proc -name "*task*" 1> outputall.txt 2> errors.txt
+   23  cd /home/
+   24  find /proc -name "*task*" 1> outputall.txt 2> errors.txt
+   25  ls
+   26  cd kezouke/
+   27  ls
+   28  cd Desktop/
+   29  find /proc -name "*task*" 1> outputall.txt 2> errors.txt
+   30  nano errors.txt
+   31  cd
+   32  find /proc -name "*task*" 1> outputall.txt 2> errors.txt
+   33  cat outputall.txt
+   34  clear
+   35  aafire
+   36  cal
+   37  clear
+   38  echo hello
+   39  jobs
+   40  gedit errors.txt &
+   41  jobs
+   42  clear
+   43  nano notes &
+   44  fg %1
+   45  cat notes
+   46  nano notes 
+   47  jobs
+   48  fg %1
+   49  gedit note2 &
+   50  nano notes &
+   51  cat notes > notes2
+   52  cat notes2
+   53  jobs
+   54  kill %2
+   55  jobs
+   56  clear
+   57  history
+   58  clear
+   59  echo "roma gay"
+   60  clear
+   61  history
+   62  clear
+   63  ls
+   64  rm outputall.txt 
+   65  ls
+   66  rm errors.txt 
+   67  rm note
+   68  rm notes
+   69  rm note2
+   70  rm notes2
+   71  ls
+   72  clear
+   73  man less
+   74  nano test.txt
+   75  cat test.txt 
+   76  less test.txt
+   77  head test.txt 
+   78  nano test.txt 
+   79  head test.txt 
+   80  clear
+   81  greep "*is*" test.txt 
+   82  grep "*is*" test.txt 
+   83  grep *is* test.txt 
+   84  grep is test.txt 
+   85  grep -h
+   86  grep --help
+   87  celar
+   88  clear
+   89  cat test.txt
+   90  head test.txt
+   91  head test.txt > head_test.txt
+   92  cat head_test.txt 
+   93  ls
+   94  clear
+   95  history
+   96  celar
+   97  clear
+   98  find /proc -name "*task*" 1> output.txt 2> errors.txt
+   99  cat output.txt 
+  100  cat errors.txt 
+  101  find /proc -name "*task*"
+  102  cat output.txt | sort | head -n 3
+  103  sort output.txt 
+  104  clear
+  105  ls
+  106  rm head_test.txt 
+  107  ;s
+  108  ls
+  109  cat errors.txt output.txt 
+  110  rm output.txt errors.txt 
+  111  ls
+  112  gedit test.txt 
+  113  nano test.txt 
+  114  clear
+  115  echo "test"
+  116  cat > test1.txt
+  117  ;s
+  118  ls
+  119  cat test
+  120  cat test1.txt 
+  121  man touch
+  122  clear
+  123  ls
+  124  gedit roma.txt
+  125  ls
+  126  cat roma.txt 
+  127  rm roma.txt 
+  128  rm test1.txt 
+  129  LS
+  130  ls
+  131  mkdir ~/week01
+  132  cd ~/week01/
+  133  ls
+  134  clear
+  135  find /usr/bin/ "*gcc*"
+  136  find /usr/bin/ --name "*gcc*"
+  137  find /usr/bin/ -name "*gcc*"
+  138  find /usr/bin/ -name "*gcc*" | tail -n 5
+  139  find /usr/bin/ -name "*gcc*" | tail -n 5 | sort -r
+  140  man tail
+  141  find /usr/bin/ -name "*gcc*" | sort -r | tail -n 5
+  142  find /usr/bin/ -name "*gcc*" | sort -r | tail -n 5 > ex1.txt
+  143  ls
+  144  cat ex1.txt
+  145  find /usr/bin/ -name "*gcc*" | sort -r | tail -n 5 > ex1.txt 0> ex1.sh
+  146  cat ex1.txt
+  147  rm ex1.txt
+  148  clear
+  149  ls
+  150  rm ex1.sh 
+  151  ls
+  152  clear
+  153  find /usr/bin/ -name "*gcc*" | sort -r | tail -n 5 > ex1.txt
+  154* cat ex1.txt DD
+  155  nano ex1.sh
+  156  cat ex1.sh 
+  157  nano ex1.sh 
+  158  cat ex1.txt 
+  159  clear
+  160  nano ex1.sh 
+  161  man sort
+  162  history
+  163  clear
+  164  history > ex2.txt
