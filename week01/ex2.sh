@@ -6,4 +6,4 @@ nano ex1.sh
 man sort
 history
 clear
-history > ex2.txt
+history > ~/week01/ex2.txt
