@@ -161,4 +161,4 @@
   161  man sort
   162  history
   163  clear
-  164  history > ex2.txt
+  164  history > ~/week01/ex2.txt
