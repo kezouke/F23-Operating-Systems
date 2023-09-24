@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 
-int tri(int *p, int n) {
+int const_tri(int *p, int n) {
     if (n <= 0) {
         return 0;
     }
@@ -46,7 +46,7 @@ int main() {
     }
 
 
-    printf("Tribonacci number for n=%d: %d\n", 5, tri(p, 5));
+    printf("Tribonacci number for n=%d: %d\n", 5, const_tri(p, 5));
 
     free(p);
 
