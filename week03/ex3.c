@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX_NAME 63
+#define MAX_NAME 64 // +1 for null character
 #define MAX_PATH 2048
 #define MAX_DATA 1024
 
