@@ -18,8 +18,8 @@ typedef struct File {
 typedef struct Directory {
     unsigned char nf;
     unsigned char nd;
-    struct File files[256];
-    struct Directory *directories[256];
+    struct File files[255];
+    struct Directory *directories[255];
     char path[MAX_PATH];
     char name[MAX_NAME];
 } Directory;
