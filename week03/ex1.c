@@ -3,6 +3,7 @@
 
 
 int const_tri(int *p, int n) {
+    n--;
     if (n <= 0) {
         return 0;
     }
