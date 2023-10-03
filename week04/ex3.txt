@@ -1,0 +1,29 @@
+______________________________________________________________________________________________________________________________________________
+
+1. Initial Process (Parent): When program starts, it consists of a single process = the parent process.
+
+2. First `fork()`: When we call fork() for the first time, it creates a new process. Now, you have two processes: the parent process and the child process.
+
+3. Second `fork()`: In each of the two processes (parent and child), we call fork() again. This results in each of them creating another process. So, after the second fork(), we have a total of 4 processes: the initial parent process, the first child process, the second child process (created by the parent), and the third child process (created by the first child).
+
+4. Third `fork()`: Similarly, each of the 4 processes resulting from the previous step calls fork() again, creating two more processes per existing process. So, after the third fork(), we will have a total of 8 processes.
+
+______________________________________________________________________________________________________________________________________________
+
+This pattern continues. Each time calling fork(), it doubles the number of processes. Therefore, when we call fork() in a loop n times, we end up with 2^n processes in total.
+
+Where:
+- "n" is the number of times fork() is called in a program.
+
+______________________________________________________________________________________________________________________________________________
+
+Difference between Results:
+
+The main difference between the two runs (n=5 and n=3) is the total number of processes created:
+
+When n=5, we have a total of 32 processes (2^5). 
+
+When n=3, we have a total of 8 processes (2^3). Again, this is due to the exponential growth pattern, but it stops after three fork() calls.
+
+______________________________________________________________________________________________________________________________________________
+
