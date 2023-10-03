@@ -44,8 +44,8 @@ int main() {
 
         if (pid == 0) {
             // Child process
-            if (execve(args[0], args, NULL) == -1) {
-                perror("execve");
+            if (execvp(args[0], args) == -1) {
+                perror("execvp");
                 exit(EXIT_FAILURE);
             }
             exit(0);
