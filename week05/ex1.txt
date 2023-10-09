@@ -1,0 +1,13 @@
+Why n Named Pipes for n Subscribers?
+
+Distinct Communication Channels: Each named pipe represents a distinct communication channel between the publisher and a specific subscriber. This separation ensures that messages are delivered reliably and efficiently to the intended recipient.
+
+Avoiding Contention: If we were to use a single named pipe for all subscribers, contention issues would arise. Multiple subscribers trying to read from a single pipe simultaneously could lead to unpredictable behavior and data corruption. Creating individual pipes eliminates this contention, ensuring that messages are processed in an orderly manner.
+
+Subscriber Isolation: Named pipes provide a level of isolation for each subscriber. Each subscriber interacts with its dedicated named pipe, which means they can work independently without affecting the communication of other subscribers. This isolation is essential for ensuring that subscribers do not interfere with each other's message reception.
+
+Synchronization: By creating separate named pipes, we achieve a form of synchronization. The publisher can send messages to individual pipes asynchronously, and subscribers can read from their respective pipes at their own pace. This asynchronous communication allows for efficient handling of messages, even when subscribers have varying processing speeds.
+
+Versatility: Named pipes offer versatility in communication patterns. Unlike unnamed pipes that primarily facilitate communication between parent and child processes, FIFOs can be used between unrelated processes. This flexibility is valuable when dealing with multiple subscribers, each running in its own process.
+
+In summary, the use of n named pipes for n subscribers in our messaging system provides a reliable and scalable solution. It ensures that messages are delivered to the right recipients without contention or interference, and it allows for asynchronous and independent communication channels. The choice between named and unnamed pipes ultimately depends on the specific requirements of the application, with named pipes offering more complexity but also greater flexibility in communication patterns.
