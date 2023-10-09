@@ -1,0 +1,19 @@
+In the provided results from exercises 3 and 4, we can observe the execution times for different values of m in both cases where n is set to 10,000,000:
+
+Explanation and Comparison:
+
+- In both exercises, as the number of threads (m) increases, the execution time generally decreases, indicating that parallelism is helping to speed up the computation.
+
+- However, the results from exercise 4 show slightly higher execution times compared to exercise 3. This is expected because mutexes introduce some overhead due to locking and unlocking, which can affect overall performance.
+
+- In exercise 4, we can observe that the sys (system time) is higher compared to exercise 3, indicating that the use of mutexes and global state management involves more system-level operations.
+
+- The difference in execution times between the two exercises is more noticeable when m is small. As m increases, the gap between the execution times narrows, as the benefits of parallelism outweigh the overhead introduced by mutexes in exercise 4.
+
+- Both exercises demonstrate the advantages of parallel programming, but exercise 4, which uses mutexes and global state management, may be less efficient than the approach in exercise 3 when it comes to lower values of m. However, exercise can be useful in scenarios where a shared state is necessary.
+
+In summary, the choice between the two approaches depends on the specific requirements of your application and the trade-offs between parallelism and synchronization overhead. Exercise 3 provides a straightforward way to divide the work among threads, while exercise 4 demonstrates the use of mutexes and global state for shared computations.
+
+The optimal number of threads for prime counting may still depend on factors such as the system's hardware, architecture, and workload. However, Experiment 4's approach may provide better scalability for a wider range of thread counts.
+
+The findings emphasize the importance of considering different parallelization strategies and thread management techniques to achieve optimal performance in multithreaded applications.
