@@ -1,0 +1,13 @@
+Based on the execution times from the third experiment, we can analyze the impact of different numbers of threads (m) on the performance of the program, which counts prime numbers in the range [0, 10,000,000). Here are the findings:
+
+- m = 1: In this case, the program runs sequentially with only one thread. As a result, it has the longest execution time. This is expected since there's no parallelism, and the program processes all numbers one by one.
+
+- m = 2: When two threads are used to distribute the computation, the execution time significantly improves compared to the single-threaded case. This suggests that having a small number of threads can lead to a noticeable reduction in execution time due to basic parallelism.
+
+- m = 4: Further increasing the number of threads to four continues to improve execution times.
+
+- m = 10: With ten threads, the execution times continue to improve. Real times are now in the range of approximately 1.539s. This indicates that increasing the number of threads can lead to further reductions in execution time, but the rate of improvement is diminishing.
+
+- m = 100: In this case, a larger number of threads are used. While this may seem like a significant increase in parallelism, the execution times show a slight increase compared to m = 10, with real times ranging from approximately 1.530s. This suggests that there might be an optimal number of threads, and having too many threads can introduce overhead.
+
+In summary, the findings highlight the trade-off between the number of threads and execution time. Increasing the number of threads generally reduces execution time due to parallelism, but there is an optimal value for m depending on the system's hardware and workload. Beyond this optimal point, adding more threads may introduce overhead and not lead to further improvements in performance. The results can help determine the best number of threads to use for prime counting in the given range to achieve optimal performance on the specific system.
