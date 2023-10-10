@@ -8,7 +8,7 @@
 #include <errno.h>
 #include <sys/wait.h>
 
-#define MAX_SUBSCRIBERS 100
+#define MAX_SUBSCRIBERS 3
 #define BUFFER_SIZE 1024
 
 int main(int argc, char *argv[]) {
