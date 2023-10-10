@@ -38,7 +38,7 @@ void *prime_counter(void *arg) {
     prime_request *req = (prime_request *) arg;
 
     //perform the request
-    int *count = malloc(sizeof(int));
+    int *count = (int*) malloc(sizeof(int));
     int result = primes_count(req->a, req->b);
     *count = result;
 
