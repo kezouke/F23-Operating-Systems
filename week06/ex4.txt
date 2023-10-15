@@ -1,0 +1,28 @@
+Round-Robin (RR) Algorithm Output:
+
+Quantum (time slice) specified by the user: 2 seconds.
+Processes are scheduled in a circular manner, and each process is given a fixed quantum to execute before moving to the next one.
+The number of triangular numbers found by each process is recorded and printed.
+Now, let's compare the Round-Robin output with the FCFS and SJF outputs:
+
+Waiting Time (WT):
+
+Round-Robin (RR): The waiting time for each process in the RR algorithm is relatively balanced since each process is given a time slice in a cyclic manner. This balance minimizes extreme cases but doesn't necessarily minimize waiting time.
+FCFS: Waiting time in FCFS can be significant for later-arriving processes, as they need to wait for earlier processes to complete.
+SJF: SJF usually results in the lowest waiting times, as it prioritizes shorter jobs.
+
+Turnaround Time (TAT):
+
+RR: Turnaround time in RR can be a bit higher compared to SJF but is generally better than FCFS for a mix of long and short processes.
+FCFS: FCFS may have higher turnaround times because longer processes arriving early can delay the completion of shorter ones.
+SJF: SJF tends to minimize turnaround times by executing shorter processes first.
+
+Response Time (RT):
+
+RR: RR offers decent response times since each process is given an initial slice of the quantum.
+FCFS: FCFS may have a longer response time, as the first process arriving may not be the quickest to execute.
+SJF: SJF typically has the shortest response times as it starts with the shortest job.
+
+
+The choice of scheduling algorithm should be based on the specific requirements of the system and the desired trade-offs between fairness and efficiency.
+When comparing these scheduling algorithms, consider the specific workload and priorities of the system to determine which one is the most appropriate.
