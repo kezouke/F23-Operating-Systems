@@ -283,7 +283,6 @@ void schedule_handler(int signum) {
 
         running_process = next_process.idx;
         create_process(running_process);
-        printf("Scheduler: Starting Process %d (Remaining Time: %d)\n", running_process, data[running_process].burst);
     }
 
 }
