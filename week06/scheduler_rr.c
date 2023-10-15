@@ -182,6 +182,22 @@ ProcessData find_next_process() {
     // if next_process did not arrive so far,
     // then we recursively call this function after incrementing total_time
     if (location == -1) {
+        for(int i = 0; i < data_size; i++) {
+            if(data[i].burst > 0) {
+                location = i;
+                break;
+            }
+        }
+
+        for(int i=0; i < data_size; i++) {
+            // Check if the process has arrived and hasn't been completed
+            if (data[i].burst > 0 && data[i].at <= data[location].at) {
+                // If the location is not set (i.e., it's the first valid process found), or
+                // it's an FCFS algorithm and the current process arrived before the one in location,
+                // update the location to the current process
+                location = i;
+            }
+        }
 
         printf("Scheduler: Runtime: %u seconds.\nProcess %d: has not arrived yet.\n", total_time, location);
 
