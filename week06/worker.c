@@ -35,13 +35,16 @@ void signal_handler(int signum){
     switch(signum) {
         case SIGTSTP:
             // pause the process indefinitely
+            printf("Process %d: stopping....\n", process_idx);
             pause();
             break;
         case SIGCONT:
             // continue the process
+            printf("Process %d: resuming....\n", process_idx);
             break;
         case SIGTERM:
             // terminate the process
+            printf("Process %d: terminating....\n", process_idx);
             exit(EXIT_SUCCESS);
             break;
         default:
