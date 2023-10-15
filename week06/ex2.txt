@@ -1,0 +1,16 @@
+**Question 1:** Change the macro TRI_BASE to a small number like 100 and run the scheduler again. Compare your results before and after the change.
+
+**Answer:** When TRI_BASE is set to a small number like 100, more triangular numbers are found in the sequence of natural numbers. As a result, the worker process has a heavier workload. When comparing the results before and after the change:
+
+- Before the change (TRI_BASE = 1000000): Fewer triangular numbers were found, resulting in faster worker execution and shorter response times. The overall scheduling order of processes might be affected due to the light workload.
+- After the change (TRI_BASE = 100): More triangular numbers were found, leading to longer worker execution times. This could affect the scheduling order and increase response times for processes.
+
+**Question 2:** Change the arrival time of all processes to make all of them zero, then run the scheduler again. In which order will processes be executed?
+
+**Answer:** When the arrival time of all processes is set to zero, the FCFS (First-Come-First-Served) scheduling algorithm will execute processes in the order in which they appear in the process list (data.txt). If there are multiple processes with the same arrival time, the one with the smallest index (idx) will be executed first. 
+
+Therefore, in this case, all processes will be executed in ascending order of their indices (idx). The order of execution will follow the sequence of processes as they are listed in the "data.txt" file.
+
+Regardless of variations in parameters such as the value of TRI_BASE or adjustments to the arrival times in the process data, the simulation results consistently demonstrate a specific behavior due to the deterministic nature of the First-Come-First-Served (FCFS) scheduling algorithm. FCFS strictly adheres to the order in which processes are provided in the 'data.txt' file. While we may modify parameters that affect the workloads and execution times of worker processes, the final execution order and results are bounded by the arrangement of processes within the 'data.txt' file.
+
+In the given simulation results, each process's execution metrics, including Arrival Time (AT), Burst Time (BT), Completion Time (CT), Waiting Time (WT), Turnaround Time (TAT), and Response Time (RT), have been computed. The order of execution remains the same across different simulation runs, reflecting the determinism of FCFS. This predictability allows us to analyze the performance of the scheduler and worker processes in a consistent manner. As a result, we observe that, while the execution times of individual processes may vary, the overall order of execution and the derived average metrics remain relatively stable.
