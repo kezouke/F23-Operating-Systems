@@ -121,7 +121,6 @@ void create_process(int new_process) {
         // 4. Update the running process
         running_process = new_process;
         data[new_process].rt = total_time - data[new_process].at;
-        printf("Scheduler: Starting Process %d (Remaining Time: %d)\n", running_process, data[running_process].burst);
     }
 
 }
