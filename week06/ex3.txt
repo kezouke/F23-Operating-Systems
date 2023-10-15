@@ -1,0 +1,9 @@
+SJF is more efficient in terms of minimizing average waiting time because it selects the process with the shortest burst time first. This results in faster completion of short jobs, reducing the overall waiting time.
+
+FCFS doesn't prioritize short jobs, which can lead to longer waiting times for processes with longer execution times. It doesn't consider job length in the scheduling decision, which can lead to inefficient resource utilization.
+
+SJF is considered a more efficient scheduling algorithm because it minimizes waiting times and maximizes throughput by selecting the shortest job first. However, it requires knowledge of job lengths in advance, which may not be practical in some scenarios.
+
+FCFS is a simple and straightforward scheduling algorithm but can lead to poor performance when there is a mix of short and long jobs.
+
+In summary, SJF prioritizes shorter jobs, potentially leading to better overall performance in terms of waiting and turnaround times. FCFS, on the other hand, schedules jobs based on their order of arrival, which can result in longer waiting times for later-arriving processes. The choice between SJF and FCFS depends on the specific characteristics of the workload and system requirements.
