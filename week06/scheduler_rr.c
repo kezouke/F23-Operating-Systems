@@ -328,8 +328,6 @@ void schedule_handler(int signum) {
         running_process = next_process.idx;
         data[running_process].remaining_quantum = quantum;
         create_process(running_process);
-
-        printf("Scheduler: Starting Process %d (Remaining Time: %d)\n", running_process, data[running_process].burst);
     }
 }
 
