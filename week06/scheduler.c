@@ -5,10 +5,11 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <sys/time.h>
+
 #define PS_MAX 10
 
 // holds the scheduling data of one process
-typedef struct{
+typedef struct {
     int idx; // process idx (index)
     int at, bt, rt, wt, ct, tat; // arrival time, burst time, response time, waiting time, completion time, turnaround time.
     int burst; // remaining burst (this should decrement when the process is being executed)
@@ -29,11 +30,11 @@ pid_t ps[PS_MAX]; // zero valued pids - means the process is terminated or not c
 // size of data array
 unsigned data_size;
 
-void read_file(FILE* file){
+void read_file(FILE *file) {
 
     int idx, at, bt;
     data_size = 0;
-    
+
     // read fisrt line
     char buffer[100];
     fgets(buffer, sizeof(buffer), file);
@@ -96,7 +97,7 @@ void create_process(int new_process) {
     // TODO: The scheduler process runs the program "./worker {new_process}"
     // using one of the exec functions like execvp
 
- 
+
     // 2. Fork a new process
     pid_t child_pid = fork();
 
@@ -106,7 +107,7 @@ void create_process(int new_process) {
         // Prepare command for exec (e.g., "./worker" "new_process")
         char process_idx_str[20];
         sprintf(process_idx_str, "%d", new_process);
-        char* args[] = {"./worker", process_idx_str, NULL};
+        char *args[] = {"./worker", process_idx_str, NULL};
 
         // Execute the worker program for the new process
         execvp(args[0], args);
@@ -130,21 +131,21 @@ ProcessData find_next_process() {
 
     // location of next process in {data} array
     int location = 0;
-    for(int i = 0; i < data_size; i++) {
-    	if(data[i].burst > 0) {
-    	    location = i;
-    	    break;
-    	}	
+    for (int i = 0; i < data_size; i++) {
+        if (data[i].burst > 0) {
+            location = i;
+            break;
+        }
     }
-    
 
-    for(int i=0; i < data_size; i++) {
+
+    for (int i = 0; i < data_size; i++) {
         // Check if the process has arrived and hasn't been completed
         if (data[i].burst > 0 && data[i].at <= data[location].at) {
             // If the location is not set (i.e., it's the first valid process found), or
             // it's an FCFS algorithm and the current process arrived before the one in location,
             // update the location to the current process
-                location = i;
+            location = i;
         }
     }
 
@@ -152,7 +153,7 @@ ProcessData find_next_process() {
 
     // if next_process did not arrive so far,
     // then we recursively call this function after incrementing total_time
-    if(data[location].at > total_time){
+    if (data[location].at > total_time) {
 
         printf("Scheduler: Runtime: %u seconds.\nProcess %d: has not arrived yet.\n", total_time, location);
 
@@ -167,11 +168,11 @@ ProcessData find_next_process() {
 
 
 // reports the metrics and simulation results
-void report(){
+void report() {
     printf("Simulation results.....\n");
     int sum_wt = 0;
     int sum_tat = 0;
-    for (int i=0; i< data_size; i++){
+    for (int i = 0; i < data_size; i++) {
         printf("process %d: \n", i);
         printf("	at=%d\n", data[i].at);
         printf("	bt=%d\n", data[i].bt);
@@ -184,16 +185,16 @@ void report(){
     }
 
     printf("data size = %d\n", data_size);
-    float avg_wt = (float)sum_wt/data_size;
-    float avg_tat = (float)sum_tat/data_size;
+    float avg_wt = (float) sum_wt / data_size;
+    float avg_tat = (float) sum_tat / data_size;
     printf("Average results for this run:\n");
     printf("	avg_wt=%f\n", avg_wt);
     printf("	avg_tat=%f\n", avg_tat);
 }
 
-void check_burst(){
+void check_burst() {
 
-    for(int i = 0; i < data_size; i++)
+    for (int i = 0; i < data_size; i++)
         if (data[i].burst > 0)
             return;
 
@@ -270,13 +271,34 @@ void schedule_handler(int signum) {
     }
 
     check_burst();
+    ProcessData next_process = find_next_process();
 
-    if (running_process == -1) {
-        ProcessData next_process = find_next_process();
+    // 3. If the next_process is not running
+    if (running_process != next_process.idx) {
+        // 3.A. If the current process is running
+        if (running_process != -1) {
+            // Stop the current running process
+            suspend(ps[running_process]);
 
+            // Print stopping message
+            printf("Scheduler: Stopping Process %d (Remaining Time: %d)\n", running_process,
+                   data[running_process].burst);
+        }
+
+        // 3.B. Set the current process as the running process
         running_process = next_process.idx;
-        create_process(running_process);
-        printf("Scheduler: Starting Process %d (Remaining Time: %d)\n", running_process, data[running_process].burst);
+
+        if (ps[running_process] != 0) {
+            // 3.C.2
+            resume(ps[running_process]);
+            printf("Scheduler: Resuming Process %d (Remaining Time: %d)", running_process, data[running_process].burst);
+        } else {
+            // 3.C.1. Create a new process for the running_process
+            create_process(running_process);
+            // Print starting message
+            printf("Scheduler: Starting Process %d (Remaining Time: %d)\n", running_process,
+                   data[running_process].burst);
+        }
     }
 
 }
@@ -285,7 +307,7 @@ void schedule_handler(int signum) {
 int main(int argc, char *argv[]) {
 
     // read the data file
-    FILE *in_file  = fopen(argv[1], "r");
+    FILE *in_file = fopen(argv[1], "r");
     if (in_file == NULL) {
         printf("File is not found or cannot open it!\n");
         exit(EXIT_FAILURE);
@@ -311,5 +333,5 @@ int main(int argc, char *argv[]) {
     signal(SIGALRM, schedule_handler);
 
     // Wait till all processes finish
-    while(1); // infinite loop
+    while (1); // infinite loop
 }
