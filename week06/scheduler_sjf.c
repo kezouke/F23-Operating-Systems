@@ -131,32 +131,33 @@ void create_process(int new_process) {
 ProcessData find_next_process() {
 
     // location of next process in {data} array
-    int location = 0;
+    int location = -1;
     for (int i = 0; i < data_size; i++) {
-        if (data[i].burst > 0) {
+        if (data[i].burst > 0 && data[i].at <= total_time) {
             location = i;
             break;
         }
     }
 
-
-    for (int i = 0; i < data_size; i++) {
-        // Check if the process has arrived and hasn't been completed
-        if (data[i].burst > 0 && data[i].at <= data[location].at) {
-            if (data[i].at == data[location].at && data[i].burst < data[location].burst) {
+    // if no processes arrived yet we find the closest one for printing
+    if (location == -1) {
+        for (int i = 0; i < data_size; i++) {
+            if (data[i].burst > 0 && data[i].at - total_time < data[location].at - total_time) {
                 location = i;
             }
-            if (data[i].at < data[location].at) {
+            if (data[i].burst > 0 && data[i].at - total_time == data[location].at - total_time &&
+                data[i].burst < data[location].burst) {
                 location = i;
             }
-            // If the location is not set (i.e., it's the first valid process found), or
-            // it's an FCFS algorithm and the current process arrived before the one in location,
-            // update the location to the current process}
+        }
+    } else { // find process with minimum burst
+        for (int i = 0; i < data_size; i++) {
+            if (data[i].burst > 0 && data[i].at <= total_time && data[i].burst < data[location].burst) {
+                location = i;
+            }
         }
     }
-
-
-
+    
     // if next_process did not arrive so far,
     // then we recursively call this function after incrementing total_time
     if (data[location].at > total_time) {
