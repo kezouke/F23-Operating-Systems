@@ -217,6 +217,8 @@ void schedule_handler(int signum) {
     // increment the total time
     total_time++;
 
+
+
     /* TODO
     1. If there is a worker process running, then decrement its remaining burst
     and print messages as follows:
@@ -275,34 +277,13 @@ void schedule_handler(int signum) {
     }
 
     check_burst();
-    ProcessData next_process = find_next_process();
 
-    // 3. If the next_process is not running
-    if (running_process != next_process.idx) {
-        // 3.A. If the current process is running
-        if (running_process != -1) {
-            // Stop the current running process
-            suspend(ps[running_process]);
+    if (running_process == -1) {
+        ProcessData next_process = find_next_process();
 
-            // Print stopping message
-            printf("Scheduler: Stopping Process %d (Remaining Time: %d)\n", running_process,
-                   data[running_process].burst);
-        }
-
-        // 3.B. Set the current process as the running process
         running_process = next_process.idx;
-
-        if (ps[running_process] != 0) {
-            // 3.C.2
-            resume(ps[running_process]);
-            printf("Scheduler: Resuming Process %d (Remaining Time: %d)", running_process, data[running_process].burst);
-        } else {
-            // 3.C.1. Create a new process for the running_process
-            create_process(running_process);
-            // Print starting message
-            printf("Scheduler: Starting Process %d (Remaining Time: %d)\n", running_process,
-                   data[running_process].burst);
-        }
+        create_process(running_process);
+        printf("Scheduler: Starting Process %d (Remaining Time: %d)\n", running_process, data[running_process].burst);
     }
 
 }
