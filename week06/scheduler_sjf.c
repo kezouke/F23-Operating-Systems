@@ -218,7 +218,6 @@ void schedule_handler(int signum) {
 
     // 1. If there is a worker process running
     if (running_process != -1) {
-        data[running_process].remaining_quantum--;
         // Decrement its remaining burst
         data[running_process].burst--;
 
@@ -245,22 +244,16 @@ void schedule_handler(int signum) {
         }
     }
 
-    if (running_process == -1 || data[running_process].remaining_quantum == 0) {
-        if (running_process == -1) {
-            check_burst();
-        } else {
-            suspend(ps[running_process]);
-            printf("Scheduler: Stopping Process %d (Remaining Time: %d)\n", running_process, data[running_process].burst);
-        }
-        // 2. Find the next process to run
+    check_burst();
+
+    if (running_process == -1) {
         ProcessData next_process = find_next_process();
 
         running_process = next_process.idx;
-        data[running_process].remaining_quantum = quantum;
         create_process(running_process);
-
         printf("Scheduler: Starting Process %d (Remaining Time: %d)\n", running_process, data[running_process].burst);
     }
+
 }
 
 int main(int argc, char *argv[]) {
