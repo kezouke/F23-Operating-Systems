@@ -27,150 +27,118 @@ ProcessData data[PS_MAX]; // array of process data
 // array of all process pids
 pid_t ps[PS_MAX]; // zero valued pids - means the process is terminated or not created yet
 
-// size of data array
+
 unsigned data_size;
 
 void read_file(FILE *file) {
-
     int idx, at, bt;
     data_size = 0;
+    memset(ps, 0, sizeof(ps));
 
-    // read fisrt line
-    char buffer[100];
-    fgets(buffer, sizeof(buffer), file);
-
-    while (fscanf(file, "%d %d %d", &idx, &at, &bt) == 3) {
+    fscanf(file, "%*s %*s %*s");
+    while (fscanf(file, "%d %d %d", &idx, &at, &bt) != EOF) {
         if (data_size < PS_MAX) {
             data[data_size].idx = idx;
             data[data_size].at = at;
             data[data_size].bt = bt;
-            data[data_size].rt = 0;
+            data[data_size].rt = -1;
             data[data_size].wt = 0;
             data[data_size].ct = 0;
             data[data_size].tat = 0;
             data[data_size].burst = bt;
-            // Increment data size
             data_size++;
         } else {
-            printf("Too many processes. Maximum limit reached.\n");
-            break;
+            printf("ERROR: Maximum number of processes reached\n");
+            exit(EXIT_FAILURE);
         }
     }
-
-    for (int i = 0; i < PS_MAX; i++) {
-        ps[i] = 0;
-    }
-
+    fclose(file);
 }
 
-// send signal SIGCONT to the worker process
+
 void resume(pid_t process) {
-    // TODO: send signal SIGCONT to the worker process if it is not in one of the states
-    // (1.not created yet or 2.terminated)
     if (kill(process, 0) != -1) {
         kill(process, SIGCONT);
     }
 }
 
-// send signal SIGTSTP to the worker process
+
 void suspend(pid_t process) {
-    // TODO: send signal SIGTSTP to the worker process if it is not in one of the states
-    // (1.not created yet or 2.terminated)
     if (kill(process, 0) != -1) {
         kill(process, SIGTSTP);
     }
 }
 
-// send signal SIGTERM to the worker process
 void terminate(pid_t process) {
     if (kill(process, 0) != -1) {
         kill(process, SIGTERM);
     }
 }
 
-// create a process using fork
 void create_process(int new_process) {
+    // stopping the running process omitted because it is non-preemptive SJF algorithm
 
-    // TODO: stop the running process
-    // TODO: fork a new process and add it to ps array
-    // TODO: Now the idx of the running process is new_process
-    // TODO: The scheduler process runs the program "./worker {new_process}"
-    // using one of the exec functions like execvp
-
-
-    // 2. Fork a new process
     pid_t child_pid = fork();
-
     if (child_pid == 0) {
-        // This is the child process
-
-        // Prepare command for exec (e.g., "./worker" "new_process")
-        char process_idx_str[20];
-        sprintf(process_idx_str, "%d", new_process);
-        char *args[] = {"./worker", process_idx_str, NULL};
-
-        // Execute the worker program for the new process
-        execvp(args[0], args);
-
-        // If execvp returns, it failed
-        perror("Exec failed");
+        char process_index[10];
+        sprintf(process_index, "%d", new_process);
+        char *args[] = {"./worker", process_index, NULL};
+        execvp(args[0],
+               args); // scheduler runs the program "./worker {new_process}" using one of the exec functions like execvp
+        perror("execvp");
         exit(EXIT_FAILURE);
-    } else {
-        // 3. Add the child process to the ps array
-        ps[new_process] = child_pid;
-
-        // 4. Update the running process
-        running_process = new_process;
+    } else if (child_pid > 0) {
+        ps[new_process] = child_pid; // added child_pid to ps array
+        running_process = new_process; // now the idx of the running process is new_process
         data[new_process].rt = total_time - data[new_process].at;
-        printf("Scheduler: Starting Process %d (Remaining Time: %d)\n", running_process, data[running_process].burst);
+    } else {
+        perror("ERROR: fork failed\n");
+        exit(EXIT_FAILURE);
     }
-
 }
 
 // find next process for running
 ProcessData find_next_process() {
-
-    // location of next process in {data} array
-    int location = -1;
+    // process_next_idx of next process in {data} array
+    int process_next_idx = -1;
     for (int i = 0; i < data_size; i++) {
         if (data[i].burst > 0 && data[i].at <= total_time) {
-            location = i;
+            process_next_idx = i;
             break;
         }
     }
 
     // if no processes arrived yet we find the closest one for printing
-    if (location == -1) {
+    if (process_next_idx == -1) {
+        process_next_idx = 0;
         for (int i = 0; i < data_size; i++) {
-            if (data[i].burst > 0 && data[i].at - total_time < data[location].at - total_time) {
-                location = i;
-            }
-            if (data[i].burst > 0 && data[i].at - total_time == data[location].at - total_time &&
-                data[i].burst < data[location].burst) {
-                location = i;
+            if (data[i].burst > 0) {
+                if (data[i].at - total_time < data[process_next_idx].at - total_time ||
+                    (data[i].at - total_time == data[process_next_idx].at - total_time &&
+                     data[i].burst < data[process_next_idx].burst)) {
+                    process_next_idx = i;
+                }
             }
         }
     } else { // find process with minimum burst
         for (int i = 0; i < data_size; i++) {
-            if (data[i].burst > 0 && data[i].at <= total_time && data[i].burst < data[location].burst) {
-                location = i;
+            if (data[i].burst > 0 && data[i].at <= total_time && data[i].burst < data[process_next_idx].burst) {
+                process_next_idx = i;
             }
         }
     }
-    
-    // if next_process did not arrive so far,
-    // then we recursively call this function after incrementing total_time
-    if (data[location].at > total_time) {
 
-        printf("Scheduler: Runtime: %u seconds.\nProcess %d: has not arrived yet.\n", total_time, location);
 
-        // increment the time
+    // If the next process hasn't arrived yet, increment the total_time and recursively call the function
+    if (data[process_next_idx].at > total_time) {
+        printf("Scheduler: Runtime: %u seconds.\nProcess %d: has not arrived yet.\n", total_time, process_next_idx);
         total_time++;
         return find_next_process();
+
     }
 
-    // return the data of next process
-    return data[location];
+    // Return the data of the next process
+    return data[process_next_idx];
 }
 
 
@@ -200,7 +168,6 @@ void report() {
 }
 
 void check_burst() {
-
     for (int i = 0; i < data_size; i++)
         if (data[i].burst > 0)
             return;
@@ -278,17 +245,37 @@ void schedule_handler(int signum) {
     }
 
     check_burst();
+    ProcessData next_process = find_next_process();
 
-    if (running_process == -1) {
-        ProcessData next_process = find_next_process();
+    // 3. If the next_process is not running
+    if (running_process != next_process.idx) {
+        // 3.A. If the current process is running
+        if (running_process != -1) {
+            // Stop the current running process
+            suspend(ps[running_process]);
 
+            // Print stopping message
+            printf("Scheduler: Stopping Process %d (Remaining Time: %d)\n", running_process,
+                   data[running_process].burst);
+        }
+
+        // 3.B. Set the current process as the running process
         running_process = next_process.idx;
-        create_process(running_process);
-        printf("Scheduler: Starting Process %d (Remaining Time: %d)\n", running_process, data[running_process].burst);
+
+        if (ps[running_process] != 0) {
+            // 3.C.2
+            resume(ps[running_process]);
+            printf("Scheduler: Resuming Process %d (Remaining Time: %d)", running_process, data[running_process].burst);
+        } else {
+            // 3.C.1. Create a new process for the running_process
+            create_process(running_process);
+            // Print starting message
+            printf("Scheduler: Starting Process %d (Remaining Time: %d)\n", running_process,
+                   data[running_process].burst);
+        }
     }
 
 }
-
 
 int main(int argc, char *argv[]) {
 
