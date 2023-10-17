@@ -110,7 +110,12 @@ ProcessData find_next_process() {
 
     // if no processes arrived yet we find the closest one for printing
     if (process_next_idx == -1) {
-        process_next_idx = 0;
+        for (int i = 0; i < data_size; i++) {
+            if (data[i].burst > 0) {
+                process_next_idx = i;
+                break;
+            }
+        }
         for (int i = 0; i < data_size; i++) {
             if (data[i].burst > 0) {
                 if (data[i].at - total_time < data[process_next_idx].at - total_time ||
