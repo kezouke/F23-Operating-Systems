@@ -1,0 +1,37 @@
+Performance Comparison of Memory Allocation Algorithms
+
+Throughput of FirstFit: 835.05 queries per second
+Throughput of BestFit: 52.80 queries per second
+Throughput of WorstFit: 52.38 queries per second
+
+Findings:
+1. FirstFit:
+   - FirstFit algorithm shows significantly higher throughput compared to BestFit and WorstFit.
+   - It quickly finds and allocates contiguous memory, making it suitable for cases where memory fragmentation is not a major concern.
+   - It performs exceptionally well when the allocation sizes are small and do not lead to significant fragmentation.
+
+2. BestFit:
+   - BestFit algorithm has a lower throughput compared to FirstFit but performs better than WorstFit.
+   - BestFit focuses on minimizing memory wastage by selecting the smallest available block that can accommodate the requested size.
+   - It is suitable for situations where memory fragmentation needs to be minimized, but it may have slower performance when dealing with larger allocations.
+
+3. WorstFit:
+   - WorstFit exhibits similar throughput to BestFit, which is lower than FirstFit.
+   - WorstFit selects the largest available block to allocate memory, which can lead to increased fragmentation.
+   - It is useful when there are cases where larger allocations are common and minimizing fragmentation is not a primary concern.
+
+Comparisons:
+- FirstFit vs. BestFit:
+  - FirstFit outperforms BestFit in terms of throughput.
+  - BestFit excels in minimizing memory wastage and fragmentation but lags in query execution speed.
+
+- FirstFit vs. WorstFit:
+  - FirstFit has a significantly higher throughput compared to WorstFit.
+  - WorstFit's focus on selecting larger memory blocks leads to potential fragmentation, affecting its throughput.
+
+- BestFit vs. WorstFit:
+  - BestFit and WorstFit have similar throughputs, with BestFit being slightly better.
+  - BestFit's emphasis on minimizing memory wastage gives it an advantage over WorstFit in most cases.
+
+In conclusion, the choice of memory allocation algorithm should be based on the specific requirements of the application. FirstFit is excellent for speed, while BestFit and WorstFit are suitable for cases where memory usage and fragmentation need to be managed carefully.
+
