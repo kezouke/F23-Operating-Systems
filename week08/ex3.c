@@ -7,26 +7,26 @@
 
 int main() {
     struct rusage usage;
-    const int memory_size = 10 * 1024 * 1024; // 10 MB
-    char *memory_block;
+    const int size = 10 * 1024 * 1024; // 10 MB
+    char *block;
 
     for (int i = 0; i < 10; i++) {
         // Allocate memory
-        memory_block = (char *)malloc(memory_size);
-        if (memory_block == NULL) {
+        block = (char *)malloc(size);
+        if (block == NULL) {
             perror("Memory allocation failed");
             exit(1);
         }
 
         // Fill memory with zeros
-        memset(memory_block, 0, memory_size);
+        memset(block, 0, size);
 
         // Get memory usage
         if (getrusage(RUSAGE_SELF, &usage) == 0) {
             printf("Memory usage: %ld KB\n", usage.ru_maxrss);
-	    printf("Maximum resident set size (KB): %ld\n", usage.ru_maxrss);
-	    printf("Minor page faults: %ld\n", usage.ru_minflt);
-	    printf("Major page faults: %ld\n", usage.ru_majflt);
+            printf("Maximum resident set size (KB): %ld\n", usage.ru_maxrss);
+            printf("Minor page faults: %ld\n", usage.ru_minflt);
+            printf("Major page faults: %ld\n", usage.ru_majflt);
         } else {
             perror("Failed to get memory usage");
         }
