@@ -1,0 +1,19 @@
+ - The program allocates 10 MB of memory in each iteration, resulting in a gradual increase in memory usage.
+ - The allocated memory is filled with zeros using the memset function.
+
+ - The "Minor page faults" value shows the number of minor page faults, which are cases where a page is not in memory but is still in the disk cache. This value increases over time as the program allocates more memory.
+
+ - The "Major page faults" value remains constant at 0. Major page faults occur when a page that is not in memory needs to be loaded from disk. Since the allocated memory is zeroed, there is no need for major page faults.
+
+ - The "si" and "so" fields in the vmstat output represent the amount of memory swapped in from disk ("si") and memory swapped out to disk ("so").
+ - In the provided vmstat output, both "si" and "so" values remain at 0, indicating that no memory swapping is occurring. This is because the system has enough free memory to accommodate the program's memory allocations.
+
+ - The "free" field in the vmstat output shows the amount of free memory available in the system.
+ - Over the course of program execution, the "free" memory decreases as the program allocates memory. The system gradually has less free memory available for other processes.
+
+ - As the program runs, it continues to allocate and zero out memory at a rate of 10 MB per second.
+ - The "Memory usage" increases by 10 MB in each iteration, reaching a maximum resident set size of 103,808 KB.
+ - The "Minor page faults" increase over time, indicating that the memory manager is swapping pages in and out as needed to accommodate the growing memory usage.
+ - The "Major page faults" remain at 0, indicating that there are no page faults requiring disk I/O.
+ - No memory swapping is observed, as indicated by "si" and "so" remaining at 0.
+ - The "free" memory decreases as the program allocates memory, potentially affecting the performance of other processes running on the system.
