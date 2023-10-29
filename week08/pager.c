@@ -87,11 +87,6 @@ void handle_sigusr1(int signum) {
         printf("Replace/Evict it with page %d to be allocated to frame %d\n",
                victim, random_frame);
 
-        printf("Copy data from the disk (page=%d) to RAM (frame=%d)\n",
-               victim, random_frame);
-        strcpy(RAM[random_frame], disk[victim]);
-
-
         for (int p = 0; p < pages; p++) {
             if (page_table[p].frame == random_frame) {
                 // Check if the victim page is dirty
@@ -105,6 +100,9 @@ void handle_sigusr1(int signum) {
                     disk_accesses++;
                     strcpy(disk[p], RAM[random_frame]);
                 }
+                printf("Copy data from the disk (page=%d) to RAM (frame=%d)\n",
+                       victim, random_frame);
+                strcpy(RAM[random_frame], disk[victim]);
 
                 // Update page table for victim page
                 page_table[p].valid = false;
