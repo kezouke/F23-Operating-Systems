@@ -23,12 +23,16 @@ int num_pages;
 int num_frames;
 int pid_pager;
 
+bool paused;
+
 // Function to handle SIGUSR1 signal from pager
 void handle_sigcont(int signum) {
     // Check if the page has been loaded
     // Page is now in RAM, continue
+    paused = false;
     printf("Received SIGUSR1: MMU resumed by SIGCONT signal from pager\n");
 }
+
 
 int main(int argc, char *argv[]) {
 
@@ -105,8 +109,9 @@ int main(int argc, char *argv[]) {
                    "Ask pager to load it from disk (SIGUSR1 signal) and wait\n");
             // Page is not in RAM, set referenced and signal pager
             page_table[page].referenced = getpid();
+            paused = true;
             kill(pid_pager, SIGUSR1);
-            pause(); // Sleep until page is loaded
+            while(paused);
             printf("continiue\n");
         } else {
             printf("It is a valid page\n");
