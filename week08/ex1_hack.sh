@@ -24,11 +24,18 @@ fi
 # Extract the 3 characters after "pass:"
 PASS_VALUE=$(echo "$PASSWORD_HEX_DUMP" | grep -oP '(?<=pass:).{8}')
 
+# Extract the relative address from xxd output
+ADDR_HEX=$(echo "$PASSWORD_HEX_DUMP" | head -n 1 | awk '{print $1}' | tr -d ':')
+ADDR_DEC=$((16#$ADDR_HEX))
+
+# Calculate the actual memory address
+ACTUAL_ADDR=$(printf '%x' $(($OFFSET + $ADDR_DEC)))
+
 # Kill the ex1.c program
 sudo kill -SIGKILL $PID
 
 if [ -z "$PASS_VALUE" ]; then
     echo "Password not found in the memory of the process."
 else
-    echo "Password Found: $PASS_VALUE"
+    echo "Password Found: $PASS_VALUE at address 0x$ACTUAL_ADDR"
 fi
