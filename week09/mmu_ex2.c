@@ -198,6 +198,7 @@ int main(int argc, char *argv[]) {
     kill(pid_pager, SIGUSR1);
     // Unmap the file and close it
     munmap(page_table, sizeof(struct PTE) * num_pages);
+    free(tlb);
     close(fd);
 
     return 0;
