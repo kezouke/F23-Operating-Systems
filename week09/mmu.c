@@ -142,7 +142,7 @@ int main(int argc, char *argv[]) {
 
         page_table[page].counter_for_aging =
                 (page_table[page].counter_for_aging >> 1) | (0x80);
-        for (int p = 0; p < page; p++) {
+        for (int p = 0; p < num_pages; p++) {
             if (p != page) {
                 page_table[p].counter_for_aging =
                         page_table[p].counter_for_aging >> 1;
