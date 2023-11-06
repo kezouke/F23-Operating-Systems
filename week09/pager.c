@@ -78,6 +78,10 @@ int aging(struct PTE* page_table) {
             if (page_table[i].counter_for_aging < min_counter) {
                 min_counter = page_table[i].counter_for_aging;
                 victim = i;
+                if (min_counter == 0) {
+                    // just to optimize
+                    break;
+                }
             }
         }
     }
@@ -85,7 +89,6 @@ int aging(struct PTE* page_table) {
            victim);
     return victim;
 }
-
 // ------------------------------------------------------------------------------------------
 
 void handle_sigusr1(int signum) {
