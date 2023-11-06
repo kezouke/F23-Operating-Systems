@@ -118,6 +118,7 @@ int main(int argc, char *argv[]) {
             printf("Read Request for page %d\n", page);
         } else {
             printf("mode - %c\n", mode);
+            continue;
         }
 
         /*
@@ -186,6 +187,8 @@ int main(int argc, char *argv[]) {
         }
         printf("\n");
     }
+    
+    printf("misses: %d\nhits: %d\n", misses, hits);
 
 
     printf("Done all requests.\n");
