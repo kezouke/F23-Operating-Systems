@@ -9,7 +9,7 @@
 #include <sys/types.h>
 #include <time.h>
 
-#define MAX_PAGES 100
+#define MAX_PAGES 1000
 
 struct PTE {
     bool valid;
