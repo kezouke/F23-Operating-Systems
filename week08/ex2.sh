@@ -18,7 +18,7 @@ pid_pager=$!
 
 sleep 3
 
-gnome-terminal -- bash -c "./mmu 4 R0 R1 W1 R0 R2 W2 R0 R3 W2 $pid_pager; exec bash"
+gnome-terminal -- bash -c "./mmu 4 'R0 R1 W1 R0 R2 W2 R0 R3 W2' $pid_pager; exec bash"
 
 # Run mmu with the reference string in a new terminal window
 
