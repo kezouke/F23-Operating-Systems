@@ -35,22 +35,18 @@ void handle_sigcont(int signum) {
 
 
 int main(int argc, char *argv[]) {
-
-    if (argc < 4) {
+    
+    if (argc != 4) {
         printf("Not enough arguments!\n"
                "Usage: %s <num_pages> <reference_string> <pid_pager>\n", argv[0]);
         return 1;
     }
-    
+
     signal(SIGCONT, handle_sigcont);
 
     num_pages = atoi(argv[1]);
-    pid_pager = atoi(argv[argc-1]);
-    char reference_string[argc-3][10];
-    for (int i = 0; i < argc-3; i++) {
-        printf("argv: %s\n", argv[i+2]);
-        strcpy(reference_string[i], argv[i + 2]);
-    }
+    char* reference_string = argv[2];
+    pid_pager = atoi(argv[3]);
     num_frames = num_pages; // For simplicity, assume one frame per page
 
     // Check if the 'pagetable' file exists before opening it
@@ -89,11 +85,12 @@ int main(int argc, char *argv[]) {
     printf("-------------------------\n");
 
     // Parse the reference string and simulate memory accesses
-    for (int i = 0; i < argc-3; i++) {
+    char mode;
+    int page;
+    for (int i = 0; i < strlen(reference_string); i++) {
+        sscanf(&reference_string[i], "%c%d", &mode, &page);
+ 
         printf("-------------------------\n");
-
-        char mode = reference_string[i][0];
-        int page = atoi(reference_string[i]+1);
         // printf("mode: %c; page: %d\n", mode, page);
         if (mode == 'W') {
             printf("Write Request for page %d\n", page);
