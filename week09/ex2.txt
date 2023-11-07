@@ -11,10 +11,10 @@ For the reference string: "W337 R490 R194 R973 R151 R425 W722 R816 W331 W760 W86
 Number of pages (num_pages) = 1000
 Number of frames (num_frames) = 50
 
-TLB Miss Ratio: 0.90 (rounded)
+TLB Miss Ratio: 0.9080
 
 Findings:
-- In the first test, with a small number of pages and frames, there was a high TLB miss ratio (1.00). This result was expected as the TLB size was relatively small compared to the number of pages, causing frequent TLB misses. In contrast, for the second test with a larger number of pages and frames, the TLB miss ratio was significantly lower (0.90), indicating that the TLB was more effective in reducing page table accesses.
+- In the first test, with a small number of pages and frames, there was a high TLB miss ratio (1.00). This result was expected as the TLB size was relatively small compared to the number of pages, causing frequent TLB misses. In contrast, for the second test with a larger number of pages and frames, the TLB miss ratio was significantly lower (0.9080), indicating that the TLB was more effective in reducing page table accesses.
 - This finding highlights the importance of properly sizing the TLB relative to the total number of pages. A smaller TLB may result in more TLB misses, impacting performance, while a larger TLB can improve memory access efficiency.
 - The choice of page replacement strategy and TLB management policies can also influence TLB miss ratios. Further experimentation and analysis of different configurations could provide insights into optimizing memory management for specific workloads.- Additionally, it's essential to optimize TLB size in proportion to the page table size. In the second scenario, the TLB size (20% of the page table size) appears to provide a good balance between performance and resource utilization.
 - The TLB miss ratio can vary based on the specific reference string used, highlighting the need to consider both hardware configuration and program behavior to optimize TLB performance.
