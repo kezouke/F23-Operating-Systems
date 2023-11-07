@@ -155,20 +155,32 @@ int main(int argc, char *argv[]) {
                 printf("It is a valid page\n");
             }
             // Update TLB with the new mapping
-            int tlb_index = -1;
-            for (int j = 0; j < tlb_size; j++) {
-                if (tlb[j].page == -1) {
-                    tlb_index = j;
-                    break;
+            // Since we have to srore only recent mapping
+            // We always move tlb to the right, meaning at 0 index
+            // it is always most recent page and on last index most oldest
+            for(int j = tlb_size - 1; j > 0; j--) {
+            	tlb[j] = tlb[j-1];
+            }
+            
+            tlb[0].page = page;
+            tlb[0].frame = page_table[page].frame;
+            // in case we now have to pages with the same frames associated
+            // mark wrong one (not at 0 position) by -2
+            // meaning it is uselsess
+            int wrong_entry = -1;
+            for(int j = 1; j < tlb_size; j++) {
+            	if (tlb[j].frame == page_table[page].frame) {
+            	    tlb[j].page = -2;
+            	    tlb[j].frame = -2;
+            	    wrong_entry = j;
+            	}
+            }
+            // move elemts starting from useless entry to the left in order not to have empty spaces in TLB
+            if (wrong_entry != -1) {
+                for (int j = wrong_entry; j < tlb_size - 1; j++) {
+                    tlb[j] = tlb[j + 1];
                 }
             }
-            if (tlb_index == -1) {
-                // TLB is full, use a simple replacement policy
-                printf("TLB is full, choose random to for replacemnt\n");
-                tlb_index = rand() % tlb_size;
-            }
-            tlb[tlb_index].page = page;
-            tlb[tlb_index].frame = page_table[page].frame;
             printf("TLB is updatet\n");
         }
 
