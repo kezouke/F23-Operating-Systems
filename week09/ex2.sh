@@ -15,7 +15,7 @@ gcc pager_ex2.c -o pager_ex2
 gcc mmu_ex2.c -o mmu_ex2
 
 # Run pager with 4 pages and 2 frames 
-./pager_ex2 1000 50 &
+./pager_ex2 1000 100 &
 
 # Capture the process ID of the pager
 pid_pager=$!
