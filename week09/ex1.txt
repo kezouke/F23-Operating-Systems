@@ -1,7 +1,7 @@
 ### Input 1: Large Reference String from gist (1000 pages and 50 frames)
-- Random Algorithm: Hit ratio is 0.06
-- NFU Algorithm: Hit ratio is 0.04
-- Aging Algorithm: Hit ratio is 0.05
+- Random Algorithm: Hit ratio is 0.06 (rounded to two decimal places)
+- NFU Algorithm: Hit ratio is 0.04 (rounded to two decimal places)
+- Aging Algorithm: Hit ratio is 0.05 (rounded to two decimal places)
 
 **Findings**:
 - The hit ratio of the Random algorithm is relatively low, suggesting that it's not very effective at reducing page faults.
@@ -9,9 +9,9 @@
 - The Aging algorithm has the lowest hit ratio in this scenario. This can be attributed to the way counters are updated based on page access requests. With timer interrupts for each access (stated in task definition), only one page counter has the leftmost bit set to 1, which is not optimal for the Aging algorithm.
 
 ### Input 2: Small Reference String (4 pages and 2 frames)
-- Random Algorithm: Hit ratio is 0.33
-- NFU Algorithm: Hit ratio is 0.33
-- Aging Algorithm: Hit ratio is 0.44
+- Random Algorithm: Hit ratio is 0.33 (rounded to two decimal places)
+- NFU Algorithm: Hit ratio is 0.33 (rounded to two decimal places) 
+- Aging Algorithm: Hit ratio is 0.44 (rounded to two decimal places)
 
 **Findings**:
 - Aging algorithm here is the best one in terms of Hit Ratio. This is likely because the reference string contains repeated accesses to a small number of pages. The algorithms effectively capture the access patterns and reduce page faults. But still with big gap for improvement.
