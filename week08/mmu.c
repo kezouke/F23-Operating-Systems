@@ -98,6 +98,7 @@ int main(int argc, char *argv[]) {
             printf("Read Request for page %d\n", page);
         } else {
             printf("mode - %c\n", mode);
+            continue;
         }
 
         // Check if the page is in RAM
