@@ -129,9 +129,22 @@ int main(int argc, char *argv[]) {
 
         // Check if the page is in the TLB
         bool tlb_hit = false;
+        int hitted_index = -1;
         for (int j = 0; j < tlb_size; j++) {
             if (tlb[j].page == page) {
+                
                 tlb_hit = true;
+                hitted_index = j;
+               	
+               	int needed_page = page;
+               	int needed_frame = tlb[j].frame;
+               	
+               	for (int tlb_i = j; tlb_i > 0; tlb_i--) {
+               	    tlb[tlb_i] = tlb[tlb_i - 1];
+               	}
+               	
+               	tlb[0].page = needed_page;
+               	tlb[0].frame = needed_frame;
                 tlb_hits++;
                 printf("TLB Hit: Page %d is in TLB, frame=%d\n", page, tlb[j].frame);
                 break;
@@ -201,7 +214,7 @@ int main(int argc, char *argv[]) {
 
     // Print TLB miss ratio
     float tlb_miss_ratio = (float)tlb_misses / (tlb_hits + tlb_misses);
-    printf("TLB Miss Ratio: %.2f\n", tlb_miss_ratio);
+    printf("TLB Miss Ratio: %f\n", tlb_miss_ratio);
 
     printf("Done all requests.\n"
            "MMU sends SIGUSR1 to the pager.\n"
