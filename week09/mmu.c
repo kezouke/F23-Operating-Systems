@@ -45,7 +45,7 @@ void printBinary(unsigned char value) {
 // Function to calculate the hit ratio
 void calculate_hit_ratio(int hits_n, int misses_n) {
     float hit_ratio = (float) hits_n / (hits_n + misses_n);
-    printf("Hit Ratio: %.2f\n", hit_ratio);
+    printf("Hit Ratio: %f\n", hit_ratio);
 }
 
 int hits = 0;
