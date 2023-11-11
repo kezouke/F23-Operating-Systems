@@ -4,23 +4,23 @@
 
 # Check the inode, number of blocks, block size, total size, and permissions of ex1
 # Using stat command with specific format options
-stat -c "Inode: %i, Number of Blocks: %b, Block Size: %B, Total Size: %s bytes, Permissions: %A" ex21
+stat -c "Inode: %i, Number of Blocks: %b, Block Size: %B, Total Size: %s bytes, Permissions: %A" ex1
 # Inode: 536138, Number of Blocks: 32, Block Size: 512, Total Size: 15960 bytes, Permissions: -rwxrwxr-x
 
-# Copy ex21 to ex22
-cp ex21 ex22
+# Copy ex1 to ex2
+cp ex1 ex2
 
-# Check the number of links for ex22
+# Check the number of links for ex2
 # Using stat command to get the link count
-links_ex2=$(stat -c "%h" ex22)
+links_ex2=$(stat -c "%h" ex2)
 echo "Number of links for ex2: $links_ex2"
 # Number of links for ex2: 1
 
 # Check if ex1 and ex2 have the same inode numbers
 # Using stat command to get the inode numbers
-stat -c "%i" ex21
+stat -c "%i" ex1
 # 536138
-stat -c "%i" ex22
+stat -c "%i" ex2
 # 536812
 
 # Explanation:
