@@ -19,24 +19,24 @@ echo "Number of directories in /etc: $dir_count"
 
 
 # Check file type before compilation
-file ex21.c
-# ex21.c: C source, ASCII text
+file ex1.c
+# ex1.c: C source, ASCII text
 
-gcc -o ex21 ex21.c
+gcc -o ex1 ex1.c
 
 # Check file type after compilation
-file ex21
-# ex21: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=6561d5ddb7a60e5a85eedbcfa9fe92d48ebbe3e4, for GNU/Linux 3.2.0, not stripped
+file ex1
+# ex1: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=6561d5ddb7a60e5a85eedbcfa9fe92d48ebbe3e4, for GNU/Linux 3.2.0, not stripped
 
 
 # Modify the program to print non-English words
 # C file type now is:
-# ex21.c: C source, Unicode text, UTF-8 text
+# ex1.c: C source, Unicode text, UTF-8 text
 # Explanation: The source file now contains Unicode text, specifically UTF-8 encoded.
 # This change is due to the introduction of non-English words (ASCII before doesn't have non-English letters, so encoding is changed).
 
 # Compiled C file type now (didn't change):
-# ex21: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=385ed8368c0e658455ad51a4eccca71fd9dcf22b, for GNU/Linux 3.2.0, not stripped
+# ex1: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=385ed8368c0e658455ad51a4eccca71fd9dcf22b, for GNU/Linux 3.2.0, not stripped
 # Explanation: The compilation process does not change the file type of the compiled executable.
 # The output still indicates it is an ELF 64-bit executable. Since after compilation thi
 
