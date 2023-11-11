@@ -1,0 +1,27 @@
+# Exercise 1: Managing Hard Links
+
+## Initialization:
+- The `monitor.c` program was initiated to watch the directory "/home/kezouke/week10/tmp".
+
+
+#### Did `monitor.c` report an event for `myfile11.txt`? 
+- Yes.
+  - Explanation: The program reported multiple events for `myfile11.txt`, including its creation, opening, and modification.
+  - These events are indicated by the lines:
+    - "New file myfile11.txt created."
+    - "File myfile11.txt was opened."
+    - "File myfile11.txt modified."
+  - The `monitor.c` program effectively captured and reported all relevant activities for `myfile11.txt`.
+
+#### Did `monitor.c` report an event for `myfile13.txt`?
+- No.
+  - Explanation: The program did not report specific events related to the creation or modification of `myfile13.txt`. This is expected behavior since symbolic links often don't trigger events when the target file is modified. The creation of `myfile13.txt` is mentioned, but symbolic link-related events might not be explicitly reported. (It just a pointer to another file, just by its path).
+
+## Hard Link Count and Explanation:
+
+- Check the number of hard links and explain the difference.
+  - The hard link count for `myfile11.txt` is now 2, reflecting the removal of duplicates. The first hard link is `myfile11.txt` itself, and the second one is `myfile1.txt`, which was not removed since it is not in the path "/home/kezouke/week10/tmp" now. If we execute the program for the path "/tmp", then this link count will be 1, as in this case, "myfile1.txt" will be unlinked.
+
+## File Size Changes:
+
+- Modifications to files (`myfile1.txt`, `myfile11.txt`, `f1.txt`) result in changes to their respective sizes, reflected in the stat information.
