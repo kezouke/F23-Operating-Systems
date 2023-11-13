@@ -14,8 +14,8 @@
   - The `monitor.c` program effectively captured and reported all relevant activities for `myfile11.txt`.
 
 #### Did `monitor.c` report an event for `myfile13.txt`?
-- No.
-  - Explanation: The program did not report specific events related to the creation or modification of `myfile13.txt`. This is expected behavior since symbolic links often don't trigger events when the target file is modified. The creation of `myfile13.txt` is mentioned, but symbolic link-related events might not be explicitly reported. (It just a pointer to another file, just by its path).
+- Only creation, without any modifications.
+  - Explanation: The program did not report specific events related to the modification of `myfile13.txt`. This is expected behavior since symbolic links often don't trigger events when the target file is modified. The creation of `myfile13.txt` is mentioned, but symbolic link-related events might not be explicitly reported. (It just a pointer to another file, just by its path).
 
 ## Hard Link Count and Explanation:
 
