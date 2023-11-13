@@ -86,6 +86,15 @@ rm -r ~/week10/tmp
 echo ""
 echo "ls -li now:"
 ls -li
+<<output
+ls -li now:
+total 20
+536935 -rw-rw-r-- 1 kezouke kezouke 5784 ноя 11 14:33 ex1.c
+535144 -rwxrwxr-x 1 kezouke kezouke 2055 ноя 11 16:10 ex23.sh
+537697 -rw-rw-r-- 1 kezouke kezouke 1669 ноя 12 12:43 ex24.sh
+536614 -rwxrwxr-x 1 kezouke kezouke  122 ноя 11 15:44 gen.sh
+537588 lrwxrwxrwx 1 kezouke kezouke   24 ноя 12 12:43 tmp1 -> /home/kezouke/week10/tmp
+output
 echo ""
 
 # Delete all other symbolic links we created
