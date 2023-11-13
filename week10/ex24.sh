@@ -78,6 +78,8 @@ cd ~/week10/tmp1/tmp2/tmp2/tmp2
 # Explanation: Accessing sub-folders illustrates symbolic link traversal, forming a loop back to itself,
 # a behavior inherent in symbolic links.
 
+cd ~/week10
+
 echo "delete tmp"
 # Delete the folder ./tmp and check the symbolic links again.
 rm -r ~/week10/tmp
@@ -85,6 +87,11 @@ echo ""
 echo "ls -li now:"
 ls -li
 echo ""
+
+# Delete all other symbolic links we created
+rm -r ~/week10/tmp1
+# Removing tmp1 folder, which includes tmp2 => removing all links
+
 # Explanation: After deleting tmp, we examine the ls -li output again.
 # tmp1 and tmp2 still exist but point to a non-existent directory, highlighting symbolic link behavior
 # when the target is removed. The system retains symbolic links but marks them as broken or dangling.
