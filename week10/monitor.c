@@ -19,8 +19,7 @@ int fd;
 int wd;
 char buffer[EVENT_BUF_LEN];
 
-// Function to print the stat information for a given entry
-void print_stat_info_for_file(const char *entry_name) {
+void print_stat_info(const char *entry_name) {
     char full_path[PATH_MAX];
     sprintf(full_path, "%s/%s", path, entry_name);
 
@@ -30,6 +29,10 @@ void print_stat_info_for_file(const char *entry_name) {
         printf("  Size: %ld bytes\n", st.st_size);
         printf("  Inode: %ld\n", st.st_ino);
         printf("  Number of Hard Links: %ld\n", st.st_nlink);
+        printf("  Mode: %o\n", st.st_mode);
+        printf("  UID: %d\n", st.st_uid);
+        printf("  GID: %d\n", st.st_gid);
+        printf("  Device: %ld\n", st.st_dev);
         printf("  Last Access Time: %s", ctime(&st.st_atime));
         printf("  Last Modification Time: %s", ctime(&st.st_mtime));
         printf("  Last Status Change Time: %s", ctime(&st.st_ctime));
@@ -38,8 +41,7 @@ void print_stat_info_for_file(const char *entry_name) {
 }
 
 
-// Function to print stat info for all entries in the directory
-void print_stat_for_all_files() {
+void print_entire_stat() {
     // Traverse the directory and print stat info for all entries
     printf("Stat for all files:\n");
     int number_of_files = 0;
@@ -52,33 +54,32 @@ void print_stat_for_all_files() {
 
     struct dirent *entry;
     while ((entry = readdir(dir)) != NULL) {
-      if (entry->d_name[0] != '.') {
-          if (entry->d_type == DT_REG || entry->d_type == DT_DIR) {
-                print_stat_info_for_file(entry->d_name);
+    	if (entry->d_name[0] != '.') {
+    	    if (entry->d_type == DT_REG || entry->d_type == DT_DIR) {
+                print_stat_info(entry->d_name);
                 number_of_files += 1;
             }
-      }
+    	}
         
     }
     if (number_of_files == 0) {
-      printf("No files in directory yet\n");
+    	printf("No files in directory yet\n");
     }
     closedir(dir);
 }
 
-// Signal handler for SIGINT to print stat before termination
 void sigintHandler(int sig_num) {
     printf("\nReceived SIGINT. Printing stat info before termination:\n");
     if (fd) {
         inotify_rm_watch(fd, wd);
         close(fd);
     }
-    print_stat_for_all_files();
+    print_entire_stat();
     exit(EXIT_SUCCESS);
 }
 
 int main(int argc, char **argv) {
-    // Check for correct command line arguments
+
     if (argc != 2) {
         fprintf(stderr, "Usage: %s <directory>\n", argv[0]);
         exit(EXIT_FAILURE);
@@ -87,20 +88,17 @@ int main(int argc, char **argv) {
     path = argv[1];
     signal(SIGINT, sigintHandler);
 
-    // Initialize inotify
     fd = inotify_init();
     if (fd < 0) {
         perror("inotify_init");
     }
 
-    // Add a watch for specified directory and events
     wd = inotify_add_watch(fd, path, IN_ACCESS | IN_CREATE | IN_DELETE | IN_MODIFY | IN_OPEN | IN_ATTRIB);
     if (wd == -1) {
         printf("Could not watch : %s\n", argv[1]);
     }
 
-    // Print initial stat information for all files
-    print_stat_for_all_files();
+    print_entire_stat();
 
     printf("\nMonitoring %s for changes...\n", path);
     while (1) {
@@ -151,7 +149,7 @@ int main(int argc, char **argv) {
                         printf("Metadata of file %s changed.\n", event->name);
                     }
                 }
-                print_stat_info_for_file(event->name);
+                print_stat_info(event->name);
             }
             i += EVENT_SIZE + event->len;
         }
