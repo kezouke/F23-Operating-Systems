@@ -30,7 +30,7 @@ bash "$current_dir/ex1_test.sh"
 cd "$current_dir"
 
 # Terminate monitor.c gracefully with Ctrl+C
-kill -INT %%
+pkill -INT monitor
 
 sleep 3
 
