@@ -9,6 +9,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <dirent.h>
+#include <time.h>
 
 #define EVENT_SIZE  (sizeof(struct inotify_event))
 #define EVENT_BUF_LEN     (1024 * (EVENT_SIZE + 16))
@@ -32,9 +33,9 @@ void print_stat_info(const char *entry_name) {
         printf("  UID: %d\n", st.st_uid);
         printf("  GID: %d\n", st.st_gid);
         printf("  Device: %ld\n", st.st_dev);
-        printf("  Last Access Time: %ld\n", st.st_atime);
-        printf("  Last Modification Time: %ld\n", st.st_mtime);
-        printf("  Last Status Change Time: %ld\n", st.st_ctime);
+        printf("  Last Access Time: %s", ctime(&st.st_atime));
+        printf("  Last Modification Time: %s", ctime(&st.st_mtime));
+        printf("  Last Status Change Time: %s", ctime(&st.st_ctime));
     }
     printf("\n");
 }
@@ -43,19 +44,27 @@ void print_stat_info(const char *entry_name) {
 void print_entire_stat() {
     // Traverse the directory and print stat info for all entries
     printf("Stat for all files:\n");
+    int number_of_files = 0;
     DIR *dir = opendir(path);
     if (dir == NULL) {
         perror("opendir");
+        closedir(dir);
         exit(EXIT_FAILURE);
     }
 
     struct dirent *entry;
     while ((entry = readdir(dir)) != NULL) {
-        if (entry->d_type == DT_REG || entry->d_type == DT_DIR) {
-            print_stat_info(entry->d_name);
-        }
+    	if (entry->d_name[0] != '.') {
+    	    if (entry->d_type == DT_REG || entry->d_type == DT_DIR) {
+                print_stat_info(entry->d_name);
+                number_of_files += 1;
+            }
+    	}
+        
     }
-
+    if (number_of_files == 0) {
+    	printf("No files in directory yet\n");
+    }
     closedir(dir);
 }
 
@@ -87,8 +96,6 @@ int main(int argc, char **argv) {
     wd = inotify_add_watch(fd, path, IN_ACCESS | IN_CREATE | IN_DELETE | IN_MODIFY | IN_OPEN | IN_ATTRIB);
     if (wd == -1) {
         printf("Could not watch : %s\n", argv[1]);
-    } else {
-        printf("Watching : %s\n", argv[1]);
     }
 
     print_entire_stat();
