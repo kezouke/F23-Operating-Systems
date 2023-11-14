@@ -7,8 +7,30 @@
 #include <string.h>
 #include <limits.h>
 #include <dirent.h>
+#include <time.h>
 
 char *path;
+
+void print_stat_info(const char *entry_name) {
+    char full_path[PATH_MAX];
+    sprintf(full_path, "%s/%s", path, entry_name);
+
+    struct stat st;
+    if (stat(full_path, &st) == 0) {
+        printf("Stat info for %s:\n", full_path);
+        printf("  Size: %ld bytes\n", st.st_size);
+        printf("  Inode: %ld\n", st.st_ino);
+        printf("  Number of Hard Links: %ld\n", st.st_nlink);
+        printf("  Mode: %o\n", st.st_mode);
+        printf("  UID: %d\n", st.st_uid);
+        printf("  GID: %d\n", st.st_gid);
+        printf("  Device: %ld\n", st.st_dev);
+        printf("  Last Access Time: %s", ctime(&st.st_atime));
+        printf("  Last Modification Time: %s", ctime(&st.st_mtime));
+        printf("  Last Status Change Time: %s", ctime(&st.st_ctime));
+    }
+    printf("\n");
+}
 
 // Function to find all hard links to a given file
 void find_all_hlinks(const char* source) {
@@ -29,19 +51,21 @@ void find_all_hlinks(const char* source) {
     }
 
     while ((entry = readdir(dir)) != NULL) {
-	char entry_path[PATH_MAX];
-    	snprintf(entry_path, sizeof(entry_path), "%s/%s", path, entry->d_name);
-    	//printf("%s\n", entry_path);
-        struct stat entry_stat;
-        if (lstat(entry_path, &entry_stat) == -1) {
-            perror("lstat");
-            exit(EXIT_FAILURE);
-        }
+    	if (entry->d_name[0] != '.') {
+    	    char entry_path[PATH_MAX];
+    	    snprintf(entry_path, sizeof(entry_path), "%s/%s", path, entry->d_name);
+    	    //printf("%s\n", entry_path);
+            struct stat entry_stat;
+            if (lstat(entry_path, &entry_stat) == -1) {
+                perror("lstat");
+                exit(EXIT_FAILURE);
+            }
 
-        if (entry_stat.st_ino == st.st_ino && strcmp(entry_path, source) != 0) {
-            printf("Hard link founded with following stat:\n\tInode: %lu, Path: %s\n",
-                    (unsigned long)entry_stat.st_ino, entry_path);
-        }
+            if (entry_stat.st_ino == st.st_ino && strcmp(entry_path, source) != 0) {
+                printf("Hard link founded with following stat:\n\tInode: %lu, Path: %s\n",
+                        (unsigned long)entry_stat.st_ino, entry_path);
+            }
+    	}
     }
     printf("\n");
     closedir(dir);
@@ -50,6 +74,8 @@ void find_all_hlinks(const char* source) {
 // Function to unlink all duplicates of a hard link, keeping only one
 void unlink_all(const char* source) {
     struct stat st;
+    char * kept_link_name;
+    int is_founded = 0;
     if (lstat(source, &st) == -1) {
         perror("lstat");
         exit(EXIT_FAILURE);
@@ -81,7 +107,20 @@ void unlink_all(const char* source) {
             }
             printf("Successefull unlink happen for: %s\n", entry_path);
         }
+      	if (entry_stat.st_ino == st.st_ino && strcmp(entry_path, source) == 0) {
+      		kept_link_name = entry->d_name;
+      		is_founded = 1;
+      	}
     }
+    
+    usleep(100);
+    if (is_founded = 1) {
+    	printf("Stat info for the kept hard link:\n");
+    	print_stat_info(kept_link_name);
+    } else {
+    	printf("It seems that original file you asked to keep is not in provided path. It wasn't removed");
+    }
+    
     printf("\n");
     closedir(dir);
 }
@@ -98,26 +137,6 @@ void create_sym_link(const char* source, const char* link) {
     printf("Symbolic link {%s} created for source %s\n\n", link_path, source);
 }
 
-void print_stat_info(const char *entry_name) {
-    char full_path[PATH_MAX];
-    sprintf(full_path, "%s/%s", path, entry_name);
-
-    struct stat st;
-    if (stat(full_path, &st) == 0) {
-        printf("Stat info for %s:\n", full_path);
-        printf("  Size: %ld bytes\n", st.st_size);
-        printf("  Inode: %ld\n", st.st_ino);
-        printf("  Number of Hard Links: %ld\n", st.st_nlink);
-        printf("  Mode: %o\n", st.st_mode);
-        printf("  UID: %d\n", st.st_uid);
-        printf("  GID: %d\n", st.st_gid);
-        printf("  Device: %ld\n", st.st_dev);
-        printf("  Last Access Time: %ld\n", st.st_atime);
-        printf("  Last Modification Time: %ld\n", st.st_mtime);
-        printf("  Last Status Change Time: %ld\n", st.st_ctime);
-    }
-    printf("\n");
-}
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
@@ -202,10 +221,6 @@ int main(int argc, char *argv[]) {
     // Remove duplicates of hard links to myfile11.txt
     unlink_all(myfile11_path);
     usleep(100);
-
-    usleep(100);
-    printf("Stat info for the kept hard link:\n");
-    print_stat_info("myfile11.txt");
 
 
     return 0;
