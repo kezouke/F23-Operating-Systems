@@ -13,11 +13,11 @@
 char *path;
 
 // Function to print detailed stat information for a given file or directory
-void print_stat_info(const char *entry_name) {
+void print_stat_info_for_file(const char *absolute_path_to_the_entry) {
     // Declare an array to store the full path
     char full_path[PATH_MAX];
     // Construct the full path
-    sprintf(full_path, "%s/%s", path, entry_name);
+    sprintf(full_path, "%s/%s", path, absolute_path_to_the_entry);
 
     // Declare a structure to store file status
     struct stat st;
@@ -34,15 +34,15 @@ void print_stat_info(const char *entry_name) {
 }
 
 // Function to find all hard links to a given file
-void find_all_hlinks(const char* source) {
+void find_all_hlinks_in_path(const char* absolute_path_to_the_entry) {
     struct stat st;                 // Declare a structure to store file status
-    if (lstat(source, &st) == -1) { // Retrieve symbolic link status and check for failure
+    if (lstat(absolute_path_to_the_entry, &st) == -1) { // Retrieve symbolic link status and check for failure
         perror("lstat");            // Print an error message
         exit(EXIT_FAILURE);         // Exit the program with a failure status
     }
 
-    // Print source file information
-    printf("Hard links to %s (inode %lu):\n", source, (unsigned long)st.st_ino);
+    // Print absolute_path_to_the_entry file information
+    printf("Hard links to %s (inode %lu):\n", absolute_path_to_the_entry, (unsigned long)st.st_ino);
 
     DIR *dir;                       // Declare a pointer to a directory stream
     struct dirent *entry;           // Declare a pointer to a directory entry
@@ -69,7 +69,7 @@ void find_all_hlinks(const char* source) {
             }
 
             // Check for matching inode and different path
-            if (entry_stat.st_ino == st.st_ino && strcmp(entry_path, source) != 0) {
+            if (entry_stat.st_ino == st.st_ino && strcmp(entry_path, absolute_path_to_the_entry) != 0) {
                 printf("Hard link founded with following stat:\n\tInode: %lu, Path: %s\n",
                         (unsigned long)entry_stat.st_ino, entry_path);
             }
@@ -81,11 +81,11 @@ void find_all_hlinks(const char* source) {
 
 // Function to unlink all duplicates of a hard link
 // It keeps only one h.l.
-void unlink_all(const char* source) {
+void unlink_all_in_path(const char* absolute_path_to_the_entry) {
     struct stat st;                 // Declare a structure to store file status
     char * kept_link_name;          // Declare a pointer to store the name of the kept hard link
     int is_founded = 0;             // Declare a flag to indicate if the original file is found
-    if (lstat(source, &st) == -1) { // Retrieve symbolic link status and check for failure
+    if (lstat(absolute_path_to_the_entry, &st) == -1) { // Retrieve symbolic link status and check for failure
         perror("lstat");            // Print an error message
         exit(EXIT_FAILURE);         // Exit the program with a failure status
     }
@@ -111,7 +111,7 @@ void unlink_all(const char* source) {
         }
 
         // Check for matching inode and different path
-        if (entry_stat.st_ino == st.st_ino && strcmp(entry_path, source) != 0) {
+        if (entry_stat.st_ino == st.st_ino && strcmp(entry_path, absolute_path_to_the_entry) != 0) {
             if (unlink(entry_path) == -1) {
                 // Unlink the entry and check for failure
                 perror("unlink");
@@ -120,7 +120,7 @@ void unlink_all(const char* source) {
             printf("Successefull unlink happen for: %s\n", entry_path);
         }
         // Check for matching inode and same path
-        if (entry_stat.st_ino == st.st_ino && strcmp(entry_path, source) == 0) {
+        if (entry_stat.st_ino == st.st_ino && strcmp(entry_path, absolute_path_to_the_entry) == 0) {
             kept_link_name = entry->d_name;  // Store the name of the kept hard link
             is_founded = 1;                  // Set the flag to indicate the original file is found
         }
@@ -130,7 +130,7 @@ void unlink_all(const char* source) {
     if (is_founded == 1) {
         // Check if the original file is found
       printf("Stat info for the kept hard link:\n");
-      print_stat_info(kept_link_name);
+      print_stat_info_for_file(kept_link_name);
     } else {
       printf("It seems that original file you asked to keep is not in provided path. It wasn't removed");
     }
@@ -140,15 +140,15 @@ void unlink_all(const char* source) {
 }
 
 // Function to create a symbolic link to a file in the watched directory
-void create_sym_link(const char* source, const char* link) {
+void create_sym_link(const char* absolute_path_to_the_entry, const char* link) {
     char link_path[PATH_MAX];
     snprintf(link_path, sizeof(link_path), "%s/%s", path, link);
 
-    if (symlink(source, link_path) == -1) {
+    if (symlink(absolute_path_to_the_entry, link_path) == -1) {
         perror("symlink");
         exit(EXIT_FAILURE);
     }
-    printf("Symbolic link {%s} created for source %s\n\n", link_path, source);
+    printf("Symbolic link {%s} created for absolute_path_to_the_entry %s\n\n", link_path, absolute_path_to_the_entry);
 }
 
 
@@ -192,7 +192,7 @@ int main(int argc, char *argv[]) {
     usleep(100);                    // Introduce a delay to ensure proper execution
 
     // Find and print all hard links to myfile1.txt
-    find_all_hlinks(myfile1_path);
+    find_all_hlinks_in_path(myfile1_path);
     usleep(100);                    // Introduce a delay to ensure proper execution
 
     // Move myfile1.txt to /tmp/myfile1.txt
@@ -233,7 +233,7 @@ int main(int argc, char *argv[]) {
 
 
     // Remove duplicates of hard links to myfile11.txt
-    unlink_all(myfile11_path);
+    unlink_all_in_path(myfile11_path);
     usleep(100);                    // Introduce a delay to ensure proper execution
 
 
