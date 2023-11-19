@@ -2,6 +2,7 @@
 
 # Function to get shared libraries of a binary
 get_libs() {
+    # Run 'ldd' on the specified binary and use 'awk' to extract only shared libraries
     ldd "$1" | awk 'BEGIN{ORS=" "}$1~/^\/lib/{print $1}$2~/=>/ && $3~/^\/lib/{print $3}'
 }
 
@@ -11,8 +12,9 @@ gcc ex1.c -o ex1
 # Create a file of at least 50 MiB
 dd if=/dev/zero of=lofs.img bs=1M count=50
 
-# Setup a loop device on the created file and get the loop device number
+# Setup a loop device on the created file
 LOOP_DEVICE=$(sudo losetup --find --show lofs.img)
+# Get the loop device number (needed to associate it with LOFS)
 LOOP_NUMBER=${LOOP_DEVICE#/dev/loop}
 
 # Create a Loop File System (LOFS) ext4 on the created file
@@ -24,17 +26,21 @@ mkdir -p ./lofsdisk
 # Mount the created filesystem on the mount point ./lofsdisk
 sudo mount lofs.img ./lofsdisk
 
-# Add two files file1 and file2 to the LOFS
+# Add file1 with my name to the LOFS
 echo "Elisei" | sudo tee ./lofsdisk/file1 > /dev/null
+# Add file2 with my surname to the LOFS
 echo "Smirnov" | sudo tee ./lofsdisk/file2 > /dev/null
 
 # Copy the necessary binaries and their shared libraries to the LOFS
 for a in bash cat echo ls; do
+    # save absolute path for command we are iterating now
     cmd=/bin/$a
+    # output that we are dealing with command now
     echo "Processing command: $cmd"
     # Get shared libraries for the command
     res=$(get_libs "$cmd")
     for i in $res; do
+        # output that we are dealing with shared library now
         echo "Processing library: $i"
         # Create the directory structure in the LOFS for the library
         sudo mkdir -p "./lofsdisk$(dirname $i)"
@@ -50,8 +56,9 @@ done
 # Copy the ex1 executable to the LOFS
 sudo cp ex1 ./lofsdisk/ex1
 
-# Change the root directory of the process to the mount point of the LOFS
+# add "line-explanation" for human to ex1.txt
 echo "ex1.c output with changing the root directory:" > ex1.txt
+# Change the root directory of the process to the mount point of the LOFS
 sudo chroot ./lofsdisk ./ex1 >> ex1.txt
 
 # Unmount the filesystem
@@ -63,6 +70,7 @@ sudo wipefs -a "/dev/loop$LOOP_NUMBER"
 # Remove the directory
 sudo rm -r ./lofsdisk
 
-# Run ex1 again without changing the root directory
+# add "line-explanation" for human to ex1.txt
 echo "ex1.c output without changing the root directory:" >> ex1.txt
+# Run ex1 again without changing the root directory
 ./ex1 >> ex1.txt
