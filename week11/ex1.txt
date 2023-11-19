@@ -36,3 +36,22 @@ dev
 lost+found
 boot
 run
+_______________________________
+FINDINGS:
+1) With Changing the Root Directory:
+The output reflects the contents of the chrooted environment starting from the root (/) within the LOFS.
+It includes directories like bin, lib, lib64, file1, file2, etc., which are part of the new root directory.
+
+2) Without Changing the Root Directory:
+The output reflects the contents of the actual root directory of the system.
+It includes typical system directories like bin, lib, lib64, home, var, etc, etc., which are not part of the chrooted environment.
+
+3) Key Findings:
+  a) Difference Explanation: 
+    This difference is because the chroot command changes the perceived root directory for the current running process and its children. A program       that is run in such a modified environment cannot access files and commands outside that environmental directory tree. This modified environment     is called a chroot jail. Changing the root directory is commonly done for system maintenance, such as recovering from a system crash, and for        computer security, such as running internet-facing services in a chroot jail.
+
+  b) Chrooted Environment Output: The first case shows only the contents of the chrooted environment, isolating the process to a specific directory      (./lofsdisk). This allows the execution of a program (ex1) with a modified root directory.
+
+  c) System Root Output: The second case reflects the actual system root directory, showing a broader view of the system's file structure.
+
+In summary, the primary difference lies in the scope of the file system hierarchy that the program (ex1) can access and interact with. The chrooted environment constrains the view to a specific directory, while running without changing the root directory gives access to the entire system's root.
