@@ -3,42 +3,52 @@
 #include <fcntl.h>
 #include <linux/input.h>
 
+#define KEYBOARD_PATH "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
+#define OUTPUT_FILE "ex1.txt"
+
+void printMessage(FILE *file, const char *message) {
+    printf("%s\n", message);
+    fprintf(file, "%s\n", message);
+}
+
 int main() {
     // Define the path to the keyboard device
-    char *path = "/dev/input/by-path/platform-i8042-serio-0-event-kbd";
-    
+    char* keyboardPath = KEYBOARD_PATH;
+
     // Define the input_event structure to store information about keyboard events
-    struct input_event ev;
+    struct input_event keyEvent;
+
     // File descriptor for the keyboard device
-    int fd;
+    int keyboardFileDescriptor;
+
     // File pointer for the output file
-    FILE *file;
-    
+    FILE *outputFile;
+
     // Define the map for translating key event values to human-readable strings
-    char *map[] = {"RELEASED", "PRESSED ", "REPEATED"};
-    
+    char *keyEventMap[] = {"RELEASED", "PRESSED ", "REPEATED"};
+
     // Initialize flags to track whether specific keys are pressed
-    int p_pressed = 0;  // Flag for the 'P' key
-    int e_pressed = 0;  // Flag for the 'E' key
-    int x_pressed = 0;  // Flag for the 'X' key
-    int c_pressed = 0;  // Flag for the 'C' key
-    int a_pressed = 0;  // Flag for the 'A' key
-    int cap_pressed = 0;  // Flag for the Caps Lock key
-    int b_pressed = 0;  // Flag for the 'B' key
-    int m_pressed = 0;  // Flag for the 'M' key
-    int w_pressed = 0;  // Flag for the 'W' key
+    int isPKeyPressed = 0; // Flag for the 'P' key
+    int isEKeyPressed = 0; // Flag for the 'E' key
+    int isXKeyPressed = 0; // Flag for the 'X' key
+    int isCKeyPressed = 0; // Flag for the 'C' key
+    int isAKeyPressed = 0; // Flag for the 'A' key
+    int isCapsLockKeyPressed = 0; // Flag for the Caps Lock key
+    int isBKeyPressed = 0; // Flag for the 'B' key
+    int isMKeyPressed = 0; // Flag for the 'M' key
+    int isWKeyPressed = 0; // Flag for the 'W' key
 
     // Open the keyboard device file for reading
-    fd = open(path, O_RDONLY);
-    if (fd == -1) {
+    keyboardFileDescriptor = open(keyboardPath, O_RDONLY);
+    if (keyboardFileDescriptor == -1) {
         // Print an error message if the file cannot be opened
-        fprintf(stderr, "Error: Could not open the keyboard device file: %s\n", path);
+        fprintf(stderr, "Error: Could not open the keyboard device file: %s\n", keyboardPath);
         return EXIT_FAILURE;
     }
 
     // Open the output file in append mode
-    file = fopen("ex1.txt", "a");
-    if (file == NULL) {
+    outputFile = fopen(OUTPUT_FILE, "a");
+    if (outputFile == NULL) {
         // Print an error message if the file cannot be opened
         fprintf(stderr, "Error: Could not open the output file (ex1.txt)\n");
         return EXIT_FAILURE;
@@ -47,84 +57,76 @@ int main() {
     // Main loop to continuously read keyboard events
     while (1) {
         // Read the next keyboard event into the input_event structure
-        read(fd, &ev, sizeof(struct input_event));
+        read(keyboardFileDescriptor, &keyEvent, sizeof(struct input_event));
 
         // Check if the event is a key event and has a valid value
-        if (ev.type == EV_KEY && (ev.value == 0 || ev.value == 1 || ev.value == 2)) {
+        if (keyEvent.type == EV_KEY && (keyEvent.value == 0 || keyEvent.value == 1 || keyEvent.value == 2)) {
             // Print the key event to the console and the output file
-            fprintf(stdout, "Event: %s, Key Code: 0x%04x (%d)\n", map[ev.value], (int)ev.code, (int)ev.code);
-            fprintf(file, "Event: %s, Key Code: 0x%04x (%d)\n", map[ev.value], (int)ev.code, (int)ev.code);
+            fprintf(stdout, "Event: %s, Key Code: 0x%04x (%d)\n", keyEventMap[keyEvent.value], (int)keyEvent.code, (int)keyEvent.code);
+            fprintf(outputFile, "Event: %s, Key Code: 0x%04x (%d)\n", keyEventMap[keyEvent.value], (int)keyEvent.code, (int)keyEvent.code);
 
             // Switch case to determine which key is pressed and update flags accordingly
-            switch (ev.code) {
+            switch (keyEvent.code) {
                 case KEY_P:
-                    p_pressed = ev.value;
+                    isPKeyPressed = keyEvent.value;
                     break;
                 case KEY_E:
-                    e_pressed = ev.value;
+                    isEKeyPressed = keyEvent.value;
                     break;
                 case KEY_C:
-                    c_pressed = ev.value;
+                    isCKeyPressed = keyEvent.value;
                     break;
                 case KEY_A:
-                    a_pressed = ev.value;
+                    isAKeyPressed = keyEvent.value;
                     break;
                 case KEY_CAPSLOCK:
-                    cap_pressed = ev.value;
+                    isCapsLockKeyPressed = keyEvent.value;
                     break;
                 case KEY_B:
-                    b_pressed = ev.value;
+                    isBKeyPressed = keyEvent.value;
                     break;
                 case KEY_M:
-                    m_pressed = ev.value;
+                    isMKeyPressed = keyEvent.value;
                     break;
                 case KEY_W:
-                    w_pressed = ev.value;
+                    isWKeyPressed = keyEvent.value;
                     break;
                 case KEY_X:
-                    x_pressed = ev.value;
+                    isXKeyPressed = keyEvent.value;
                 default:
                     break;
             }
 
             // Check for specific key combinations and print corresponding messages
-            if (p_pressed && e_pressed) {
+            if (isPKeyPressed && isEKeyPressed) {
                 // Print message for the 'P' and 'E' keys combination
-                printf("Shortcut Detected: 'P' + 'E'\n");
-                printf("Message: I passed the Exam!\n");
-                fprintf(file, "Shortcut Detected: 'P' + 'E'\n");
-                fprintf(file, "Message: I passed the Exam!\n");
-            }
+                printMessage(outputFile, "Shortcut Detected: 'P' + 'E'");
+                printMessage(outputFile, "Message: I passed the Exam!");
+            }   
 
-            if (c_pressed && a_pressed && p_pressed) {
+            if (isCKeyPressed && isAKeyPressed && isPKeyPressed) {
                 // Print message for the 'C', 'A', and 'P' keys combination
-                printf("Shortcut Detected: 'C' + 'A' + 'P'\n");
-                printf("Message: Get some cappuccino!\n");
-                fprintf(file, "Shortcut Detected: 'C' + 'A' + 'P'\n");
-                fprintf(file, "Message: Get some cappuccino!\n");
+                printMessage(outputFile, "Shortcut Detected: 'C' + 'A' + 'P'");
+                printMessage(outputFile, "Message: Get some cappuccino!");
             }
 
-            if (b_pressed && m_pressed && w_pressed) {
+            if (isBKeyPressed && isMKeyPressed && isWKeyPressed) {
                 // Print message for the 'B', 'M', and 'W' keys combination
-                printf("Shortcut Detected: 'B' + 'M' + 'W'\n");
-                printf("Message: BMW is the best car company ever\n");
-                fprintf(file, "Shortcut Detected: 'B' + 'M' + 'W'\n");
-                fprintf(file, "Message: BMW is the best car company ever\n");
+                printMessage(outputFile, "Shortcut Detected: 'B' + 'M' + 'W'");
+                printMessage(outputFile, "Message: BMW is the best car company ever");
             }
 
             // Check if the keys 'X' and 'E' were pressed to exit the loop
-            if (x_pressed && e_pressed) {
-                // Print message and exit the program
-                printf("Exit Shortcut Detected: 'X' + 'E'\n");
-                fprintf(file, "Exit Shortcut Detected: 'X' + 'E'\n");
+            if (isXKeyPressed && isEKeyPressed) {
+                printMessage(outputFile, "Exit Shortcut Detected: 'X' + 'E'");
                 break;
             }
         }
     }
 
     // Close the output file and the keyboard device
-    fclose(file);
-    close(fd);
+    fclose(outputFile);
+    close(keyboardFileDescriptor);
 
     return EXIT_SUCCESS;
 }
