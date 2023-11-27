@@ -94,30 +94,54 @@ int main() {
                 case KEY_X:
                     isXKeyPressed = keyEvent.value;
                 default:
+                	// if any other key is pressed -> reset variables
+                	isPKeyPressed = 0; // Flag for the 'P' key
+					isEKeyPressed = 0; // Flag for the 'E' key
+					isXKeyPressed = 0; // Flag for the 'X' key
+					isCKeyPressed = 0; // Flag for the 'C' key
+					isAKeyPressed = 0; // Flag for the 'A' key
+					isCapsLockKeyPressed = 0; // Flag for the Caps Lock key
+					isBKeyPressed = 0; // Flag for the 'B' key
+					isMKeyPressed = 0; // Flag for the 'M' key
+					isWKeyPressed = 0; // Flag for the 'W' key
                     break;
             }
 
             // Check for specific key combinations and print corresponding messages
-            if (isPKeyPressed && isEKeyPressed) {
+            // IMPORTANT NOTE:
+            // THE CHECKING FOR ALL OTHER SYMBOLS IS NEEDED IN CASES
+            // WHEN USER FOR EXAMPLE ENTER C + W + A + P
+            // SINCE IT IS ANOTHER SHORTCUT, WE HAVE TO MAKE ALL FLAGS TO BE ZERO
+            // AND ALSO CHECK THAT ANOTHER FLAG IS NOT PRESSED
+            // IN ORDER NOT TO HAVE C + B + A + P
+            if (isPKeyPressed && isEKeyPressed && !isXKeyPressed
+            	&& !isCKeyPressed && !isAKeyPressed && !isCapsLockKeyPressed
+            	&& !isBKeyPressed && !isMKeyPressed && !isWKeyPressed) {
                 // Print message for the 'P' and 'E' keys combination
                 printMessage(outputFile, "Shortcut Detected: 'P' + 'E'");
                 printMessage(outputFile, "Message: I passed the Exam!");
             }   
 
-            if (isCKeyPressed && isAKeyPressed && isPKeyPressed) {
+            if (isPKeyPressed && !isEKeyPressed && !isXKeyPressed
+            	&& isCKeyPressed && isAKeyPressed && !isCapsLockKeyPressed
+            	&& !isBKeyPressed && !isMKeyPressed && !isWKeyPressed) {
                 // Print message for the 'C', 'A', and 'P' keys combination
                 printMessage(outputFile, "Shortcut Detected: 'C' + 'A' + 'P'");
                 printMessage(outputFile, "Message: Get some cappuccino!");
             }
 
-            if (isBKeyPressed && isMKeyPressed && isWKeyPressed) {
+            if (!isPKeyPressed && !isEKeyPressed && !isXKeyPressed
+            	&& !isCKeyPressed && !isAKeyPressed && !isCapsLockKeyPressed
+            	&& isBKeyPressed && isMKeyPressed && isWKeyPressed) {
                 // Print message for the 'B', 'M', and 'W' keys combination
                 printMessage(outputFile, "Shortcut Detected: 'B' + 'M' + 'W'");
                 printMessage(outputFile, "Message: BMW is the best car company ever");
             }
 
             // Check if the keys 'X' and 'E' were pressed to exit the loop
-            if (isXKeyPressed && isEKeyPressed) {
+            if (!isPKeyPressed && isEKeyPressed && isXKeyPressed
+            	&& !isCKeyPressed && !isAKeyPressed && !isCapsLockKeyPressed
+            	&& !isBKeyPressed && !isMKeyPressed && !isWKeyPressed) {
                 printMessage(outputFile, "Exit Shortcut Detected: 'X' + 'E'");
                 break;
             }
