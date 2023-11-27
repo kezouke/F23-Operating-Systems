@@ -95,16 +95,16 @@ int main() {
                     isXKeyPressed = keyEvent.value;
 		    break;
                 default:
-                	// if any other key is pressed -> reset variables
-                	isPKeyPressed = 0; // Flag for the 'P' key
-					isEKeyPressed = 0; // Flag for the 'E' key
-					isXKeyPressed = 0; // Flag for the 'X' key
-					isCKeyPressed = 0; // Flag for the 'C' key
-					isAKeyPressed = 0; // Flag for the 'A' key
-					isCapsLockKeyPressed = 0; // Flag for the Caps Lock key
-					isBKeyPressed = 0; // Flag for the 'B' key
-					isMKeyPressed = 0; // Flag for the 'M' key
-					isWKeyPressed = 0; // Flag for the 'W' key
+		    // if any other key is pressed -> reset variables
+		    isPKeyPressed = 0; // Flag for the 'P' key
+		    isEKeyPressed = 0; // Flag for the 'E' key
+		    isXKeyPressed = 0; // Flag for the 'X' key
+		    isCKeyPressed = 0; // Flag for the 'C' key
+		    isAKeyPressed = 0; // Flag for the 'A' key
+		    isCapsLockKeyPressed = 0; // Flag for the Caps Lock key
+		    isBKeyPressed = 0; // Flag for the 'B' key
+		    isMKeyPressed = 0; // Flag for the 'M' key
+		    isWKeyPressed = 0; // Flag for the 'W' key
                     break;
             }
 
