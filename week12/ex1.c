@@ -93,6 +93,7 @@ int main() {
                     break;
                 case KEY_X:
                     isXKeyPressed = keyEvent.value;
+		    break;
                 default:
                 	// if any other key is pressed -> reset variables
                 	isPKeyPressed = 0; // Flag for the 'P' key
