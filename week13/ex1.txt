@@ -1,0 +1,73 @@
+Output of the programm:
+Thread 1 is created
+Thread 1 attempts to lock resource mutex 2
+Resource mutex 2 locked by thread 1
+Thread 1 attempts to lock resource mutex 1
+Resource mutex 1 locked by thread 1
+Deadlock detected
+Thread Status:
+Thread 0: 
+Thread 1: Mutex 1 is locked | Mutex 2 is locked | 
+Thread 2: 
+Thread 3: 
+Trying to resolve deadlock via cancelling thread 1...
+Thread 3 is created
+Thread 3 attempts to lock resource mutex 1
+Thread 3 could not lock resource mutex 1
+Thread 3 is created
+Thread 3 attempts to lock resource mutex 0
+Resource mutex 0 locked by thread 3
+Deadlock detected
+Thread Status:
+Thread 0: 
+Thread 1: Mutex 1 is locked | Mutex 2 is locked | 
+Thread 2: 
+Thread 3: Mutex 0 is locked | 
+Trying to resolve deadlock via cancelling thread 1...
+Thread 1 attempts to lock resource mutex 0
+Thread 1 could not lock resource mutex 0
+Thread 3 is created
+Thread 3 attempts to lock resource mutex 2
+Thread 3 could not lock resource mutex 2
+Trying to resolve deadlock via cancelling thread 3...
+Trying to resolve deadlock via cancelling thread 3...
+Trying to resolve deadlock via cancelling thread 2...
+
+Analysis and answers to questions:
+Deadlock Occurrence:
+
+Thread 1 attempts to lock resource mutex 1 and successfully locks it.
+Thread 1 attempts to lock resource mutex 2 and successfully locks it.
+A deadlock is detected at this point, as Thread 1 is holding resources 1 and 2 while trying to acquire resource 1 again.
+
+The deadlock occurred due to many reasons:
+
+Mutual Exclusion: Present in the scenario as threads acquire and hold exclusive locks on mutexes (resources).
+Hold and Wait: Present in the scenario as threads can hold one resource while waiting to acquire another. For example, Thread 1 holds mutexes 1 and 2 while attempting to reacquire mutex 1.
+No Preemption: Present in the scenario as the program attempts to resolve deadlocks without preemptively taking resources away from threads. Threads are canceled, and resources are released voluntarily.
+Circular Wait: Present in the scenario as there are circular dependencies in the resource allocation graph. For example, Thread 1 holds mutexes 1 and 2 and attempts to reacquire mutex 1, forming a circular dependency.
+
+
+
+The program attempts to resolve the deadlock by canceling Thread 1 and unlocking its held resources (1 and 2).
+
+
+Subsequent Deadlock Occurrence:
+
+Thread 3 is created and attempts to lock resource mutex 1 but cannot lock it.
+Thread 3 is created again and attempts to lock resource mutex 0, successfully locking it.
+A new deadlock is detected as Thread 3 holds resource 0, and there is a circular dependency with Thread 1.
+Why Subsequent Deadlock Occurred:
+
+The subsequent deadlock occurred due to the initial deadlock resolution. After Thread 1 was canceled, resources 1 and 2 were unlocked. Thread 3, created afterward, acquired resource 0 but was unable to acquire resource 1, resulting in a circular dependency with the still-existing Thread 1.
+
+Analysis:
+
+The attempted deadlock resolution did not fully resolve the situation, leading to a subsequent deadlock. This scenario demonstrates the challenges of resolving deadlocks dynamically in a multithreaded environment.
+
+
+Why Deadlock Did Not Happen (Follow-Up Attempts):
+
+The program continues to attempt deadlock resolution by canceling threads involved in the deadlock (Threads 1 and 3).
+The program may continue making attempts to resolve deadlocks until either the deadlock is successfully resolved or the main process decides to terminate.
+In summary, the deadlocks occurred due to circular dependencies in the resource allocation graph, and the attempts to resolve them dynamically did not completely eliminate the circular dependencies, leading to subsequent deadlocks. Deadlock resolution in dynamic scenarios can be complex and challenging.
