@@ -2,14 +2,29 @@
 
 Welcome! This repository is a culmination of diverse hands-on exercises and projects covering a spectrum of topics ranging from Unix-like systems to advanced C programming, interprocess communication, memory management, file systems, input/output handling, deadlock detection, and more. Each folder represents a unique category of exercises, offering a comprehensive exploration of these fundamental concepts from Operating Systems Course.
 
+## Table of Contents
+- [01.Basic_UNIX_commands](#01.Basic_UNIX_commands)
+- [02.Comprehensive_recap_of_C](#02.Comprehensive_recap_of_C)
+- [03.Comprehensive_recap_of_C_2.0](#03.Comprehensive_recap_of_C_2.0)
+- [04.Processes_&_Threads](#04.Processes_&_Threads)
+- [05.Interprocess_Communication](#05.Interprocess_Communication)
+- [06.Processes_scheduling](#06.Processes_scheduling)
+- [07.Memory_Management](#07.Memory_Management)
+- [08.Memory_Management_2.0](#08.Memory_Management_2.0)
+- [09.Memory_Management_2.0](#09.Memory_Management_3.0)
+- [10.File_Systems](#10.File_Systems)
+- [11.Alternative_File_Systems](#11.Alternative_File_Systems)
+- [12.Input_&_Output](#12.Input_&_Output)
+- [13.Deadlocks](#13.Deadlocks)
+
 ## Folder Structure and Task Descriptions
 
-### [01.Basic_UNIX_commands](01.Basic_UNIX_commands)
+## [01.Basic_UNIX_commands](01.Basic_UNIX_commands)
 In this section, fundamental Unix commands, shell scripting, and basic C programming are explored. The tasks include creating directories, executing shell commands, recording command history, writing shell scripts, and implementing a simple "Hello World" program in C. The [tasks_description.pdf](01.Basic_UNIX_commands/tasks_description.pdf) file provides detailed explanations for each exercise.
 
 In these exercises, I successfully completed a series of tasks focusing on shell scripting and basic C programming. In Exercise 1, I created a directory named "week01" in my home directory, listed the last 5 entries in /usr/bin containing "gcc" in reverse alphabetical order, and saved the results in a file named "ex1.txt." For Exercise 2, I experimented with various commands, recorded the command history using the "history" command, and saved the output in "ex2.txt," along with a script named "ex2.sh." In Exercise 3, I crafted a shell script, "ex3.sh," that created two files, "root.txt" and "home.txt," within separate folders. The script also included pauses with date stamps and displayed the sorted content of the files and folders. Finally, in Exercise 4, I wrote a simple "Hello World" program in C, saved it as "main.c," compiled it into an executable named "ex4," and successfully ran the program. The files "main.c" and "ex4" were submitted as part of the task. These exercises provided hands-on experience with shell scripting, command execution, and basic C programming concepts.
 
-### [02.Comprehensive_recap_of_C](02.Comprehensive_recap_of_C)
+## [02.Comprehensive_recap_of_C](02.Comprehensive_recap_of_C)
 This series of exercises delves deep into C programming concepts. The tasks cover variable declarations, string manipulations, numeral system conversions, character counting, and sequence computations. The [tasks_description.pdf](02.Comprehensive_recap_of_C/tasks_description.pdf) file offers comprehensive guidance for each exercise.
 
 In this series of exercises, I successfully tackled various programming tasks involving C language and shell scripting.
@@ -26,7 +41,7 @@ In this series of exercises, I successfully tackled various programming tasks in
 
 These exercises collectively provided a comprehensive exploration of C programming, including variable declarations, string manipulations, numeral system conversions, character counting, and sequence computation.
 
-### [03.Comprehensive_recap_of_C_2.0](03.Comprehensive_recap_of_C_2.0)
+## [03.Comprehensive_recap_of_C_2.0](03.Comprehensive_recap_of_C_2.0)
 Advanced C programming exercises covering pointers, structures, file manipulation, directory organization, array aggregation, and mathematical computations. The [tasks_description.pdf](03.Comprehensive_recap_of_C_2.0/tasks_description.pdf) file provides detailed task descriptions.
 
 In this set of programming exercises, I successfully completed tasks involving pointers, structures, file and directory organization, and array aggregation.
@@ -41,7 +56,7 @@ In this set of programming exercises, I successfully completed tasks involving p
 
 These exercises collectively covered a wide range of C programming concepts, including pointers, structures, file manipulation, directory organization, array aggregation, and mathematical computations.
 
-### [04.Processes_&_Threads](04.Processes_&_Threads)
+## [04.Processes_&_Threads](04.Processes_&_Threads)
 Programming exercises related to process creation, vector calculations, process observation, and the development of a simplistic shell. [tasks_description.pdf](04.Processes_&_Threads/tasks_description.pdf) offers comprehensive guidance for each exercise.
 
 In these programming exercises, I successfully completed tasks related to process creation, vector calculations, process observation, and the development of a simplistic shell.
@@ -56,7 +71,7 @@ In these programming exercises, I successfully completed tasks related to proces
 
 These exercises collectively covered various aspects of process creation, inter-process communication, system calls, and command execution in a Unix-like environment.
 
-### [05.Interprocess_Communication](05.Interprocess_Communication)
+## [05.Interprocess_Communication](05.Interprocess_Communication)
 This series explores tasks related to interprocess communication via pipes, multi-threading, and parallelizing primality checking. Detailed explanations for each exercise can be found in the [tasks_description.pdf](05.Interprocess_Communication/tasks_description.pdf) file.
 
 In this series of programming exercises, I successfully tackled tasks related to inter-process communication via pipes, multi-threading, and parallelizing primality checking.
@@ -75,7 +90,7 @@ In this series of programming exercises, I successfully tackled tasks related to
 
 These exercises collectively covered a range of topics, including inter-process communication, multi-threading, synchronization, and parallel computation.
 
-### [06.Processes_scheduling](06.Processes_scheduling)
+## [06.Processes_scheduling](06.Processes_scheduling)
 Exercises covering process and signal handling, scheduling algorithms, and simulation. The [tasks_description.pdf](06.Processes_scheduling/tasks_description.pdf) file provides detailed guidance for each task.
 
 In this series of programming exercises, I successfully tackled tasks related to process and signal handling, scheduling algorithms, and simulation. Here's a brief summary of each exercise:
@@ -90,7 +105,7 @@ In this series of programming exercises, I successfully tackled tasks related to
 
 These exercises collectively covered topics such as process communication, signal handling, scheduling algorithms, and simulation. Each exercise involved creating and modifying C programs to achieve specific objectives and analyzing the results.
 
-### [07.Memory_Management](07.Memory_Management)
+## [07.Memory_Management](07.Memory_Management)
 Tasks covering memory allocation simulation and file processing using memory mapping. The exploration includes memory allocation algorithms, file processing, and system calls. Refer to [tasks_description.pdf](07.Memory_Management/tasks_description.pdf) for detailed task descriptions.
 
 In this set of programming exercises, I successfully completed tasks related to memory allocation simulation and file processing using memory mapping. Here's a brief summary of each exercise:
@@ -101,7 +116,7 @@ In this set of programming exercises, I successfully completed tasks related to 
 
 These exercises covered various aspects of memory management, file processing, and system calls, showcasing the ability to work with memory allocation algorithms and memory mapping in a Unix environment. Each task involved implementing specific functionalities, handling file input/output, and optimizing performance metrics.
 
-### [08.Memory_Management_2.0](08.Memory_Management_2.0)
+## [08.Memory_Management_2.0](08.Memory_Management_2.0)
 Extensions of memory management exercises covering Tribonacci calculations, Euclidean distance computation, file system simulation, and array aggregation. [tasks_description.pdf](08.Memory_Management_2.0/tasks_description.pdf) provides detailed task descriptions.
 
 **Exercise 1:**
@@ -120,7 +135,7 @@ Extensions of memory management exercises covering Tribonacci calculations, Eucl
 
 These exercises cover topics such as process communication, memory management, virtual memory simulation, and monitoring memory usage. Each program addresses specific tasks and requirements outlined in the exercises.
 
-### [09.Memory_Management_3.0](09.Memory_Management_3.0)
+## [09.Memory_Management_3.0](09.Memory_Management_3.0)
 Advanced memory management tasks covering password generation, hacking simulation, virtual memory simulation, and memory usage monitoring. Refer to [tasks_description.pdf](09.Memory_Management_3.0/tasks_description.pdf) for detailed guidance.
 
 **Exercise 1:**
@@ -139,7 +154,7 @@ Advanced memory management tasks covering password generation, hacking simulatio
 
 These exercises involve extending existing programs to implement additional functionalities, comparing different algorithms, and analyzing performance metrics such as hit ratio and TLB miss ratio. The findings are documented in separate text files for each exercise.
 
-### [10.File_Systems](10.File_Systems)
+## [10.File_Systems](10.File_Systems)
 Exploration of file system operations, directory monitoring, file type analysis, inode, and link examination, symbolic links, and file permissions. [tasks_description.pdf](10.File_Systems/tasks_description.pdf) offers detailed explanations for each exercise.
 
 **Exercise 1: Directory Monitoring**
@@ -181,7 +196,7 @@ Exploration of file system operations, directory monitoring, file type analysis,
 
 These exercises cover various aspects of file system operations, directory monitoring, symbolic links, and file permissions. The solutions involve practical implementations and observations of system behaviors.
 
-### [11.Alternative_File_Systems](11.Alternative_File_Systems)
+## [11.Alternative_File_Systems](11.Alternative_File_Systems)
 Introduction to File System isolation using chroot, involving setting up a Loop File System and isolating processes within it. [tasks_description.pdf](11.Alternative_File_Systems/tasks_description.pdf) provides comprehensive guidance.
 
 **Exercise 1: File System Isolation with chroot**
